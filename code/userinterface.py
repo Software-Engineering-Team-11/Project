@@ -5,13 +5,14 @@ from typing import Dict, List
 from supabase_manager import supabase
 
 def on_continue_clicked(root:tk.Tk,users, input_ids) -> None:
-     if len(users["blue"]) < 1 or len(users["red"]) < 1:
-        messagebox.showerror("Error", "There must be at least 1 user on each team")
+    #  if len(users["blue"]) < 1 or len(users["red"]) < 1:
+    #     messagebox.showerror("Error", "There must be at least 1 user on each team")
+        print("HEY!")
         return
 
 def builder(root:tk.Tk, users :dict) -> None:
     builder: pygubu.Builder = pygubu.Builder()
-    builder.add_from_file("../ui/player_interface.ui")
+    builder.add_from_file("ui/player_interface.ui")
 
     # Place the main frame in the center of the root window
     # make unresizable

@@ -12,8 +12,10 @@ def on_continue_clicked(root:tk.Tk,users, input_ids) -> None:
 
 def builder(root:tk.Tk, users :dict) -> None:
     builder: pygubu.Builder = pygubu.Builder()
-    builder.add_from_file("ui/player_interface.ui")
-
+    try:
+        builder.add_from_file("ui/player_interface.ui")
+    except:
+        builder.add_from_file("../ui/player_interface.ui")
     # Place the main frame in the center of the root window
     # make unresizable
     main_frame: tk.Frame = builder.get_object("master", root)

@@ -2,12 +2,13 @@ import tkinter as tk
 import pygubu
 from tkinter import messagebox
 from typing import Dict, List
-from supabase_manager import supabase
+from supabase_manager import supabase, print_database_content, add_user_to_soup
 
 def on_continue_clicked(root:tk.Tk,users, input_ids) -> None:
-    #  if len(users["blue"]) < 1 or len(users["red"]) < 1:
-    #     messagebox.showerror("Error", "There must be at least 1 user on each team")
-        print("HEY!")
+     print('submitted');
+     
+     if (len(users["blue"]) < 1) or (len(users["red"]) < 1):
+        messagebox.showerror("Error", "There must be at least 1 user on each team")
         return
 
 def builder(root:tk.Tk, users :dict) -> None:
@@ -16,6 +17,8 @@ def builder(root:tk.Tk, users :dict) -> None:
         builder.add_from_file("ui/player_interface.ui")
     except:
         builder.add_from_file("../ui/player_interface.ui")
+    builder.add_from_file("/Users/rafaelbalassiano/Desktop/Laser_Tag/Project/ui/player_interface.ui")
+
     # Place the main frame in the center of the root window
     # make unresizable
     main_frame: tk.Frame = builder.get_object("master", root)
@@ -50,6 +53,9 @@ def builder(root:tk.Tk, users :dict) -> None:
     # Testing submit button
     builder.get_object("submit").configure(command=lambda: on_continue_clicked(root,users,input_ids))
 
+    #PRINTING DATABASE CONTENT
     # data = supabase.table("users").select("*").execute()
+    # print("Database Content:")
     # print(data)
+    # print_database_content()
     

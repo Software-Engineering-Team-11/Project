@@ -4,6 +4,8 @@ from tkinter import messagebox
 from typing import Dict, List
 from supabase_manager import supabase
 
+# Code for UI
+
 def on_continue_clicked(root:tk.Tk,users, input_ids) -> None:
     #  if len(users["blue"]) < 1 or len(users["red"]) < 1:
     #     messagebox.showerror("Error", "There must be at least 1 user on each team")

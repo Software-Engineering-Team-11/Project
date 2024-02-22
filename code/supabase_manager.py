@@ -6,44 +6,51 @@ from supabase_py import create_client
 load_dotenv()
 
 # Initialize Supabase client
-supabase_url = 'https://pdfbshphnccebqdnhawd.supabase.co'
-supabase_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZmJzaHBobmNjZWJxZG5oYXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDgzNjE4OTMsImV4cCI6MjAyMzkzNzg5M30.ZYfCEZfUHuOVlMqDLIkSEA7_PU4B5OHWD-CUGjwfYI8'
-supabase = create_client(supabase_url, supabase_key)
+url = 'https://pdfbshphnccebqdnhawd.supabase.co'
+key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkZmJzaHBobmNjZWJxZG5oYXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDgzNjE4OTMsImV4cCI6MjAyMzkzNzg5M30.ZYfCEZfUHuOVlMqDLIkSEA7_PU4B5OHWD-CUGjwfYI8'
+supabase = create_client(url, key)
 
 response = supabase.table("users").select("*").execute()
 
-# Print the response data to inspect the results
-print(response)
+print("URL:", url)
+print("Key:", key)
 
-# Check if the response contains any data
-# if response.get('status') == '200':
-#     data = response.get('data')
-#     if data:
-#         print("Data found:", data)
-#     else:
-#         print("No data found")
-# else:
-#     print("Error:", response.get('error'))
+# Check if the URL or key is missing
+if url is None or key is None:
+    raise ValueError("Supabase URL or key not found in environment variables.")
 
-new_user_data = {
-    'user_id': 1,
-    'username': 'john_doe',
-}
+# Create Supabase client
+supabase = create_client(url, key)
+
+# Function to insert user into "users" table
+from postgrest.exceptions import APIError
 
 
-# ADDING A USER TO DATABASE
-def add_user_to_soup(user_id, username):
-    # Perform the operation to add user to your Supabase table
-    response = supabase.table("users").insert({
-        'user_id': user_id,
-        'username': username,
-    }).execute()
+def insert_user(username, user_id):
+    # Define user data
+    user_data = {"username": username, "user_id": user_id}
 
-    # Check if the response indicates success
-    if response.get('status') == 201:
-        print("User added successfully")
+    # Insert user record into Supabase table
+    response = supabase.table("users").insert(user_data)
+    if response.status_code == 201:
+        print(f"User '{username}' added successfully.")
     else:
-        print("Error adding user:", response.get('error'))
+        print(f"Failed to add user '{username}':", response.error)
+
+# def insert_user(username, user_id):
+#     # Define the data to be inserted
+#     data = {'username': username, 'user_id': user_id}
+
+#     # Insert data into "users" table
+#     try:
+#         response = supabase.table('users').insert(data).execute()
+#         print("User inserted successfully.")
+#     except APIError as e:
+#         if e.code == '23505':
+#             print(f"Failed to insert user: {e.message}")
+#         else:
+#             print("Failed to insert user due to an unknown error.")
+#             print(e)
 
 
 # PRINTING DATABASE CONTENT METHOD
@@ -62,5 +69,3 @@ def print_database_content() -> None:
     else:
         print("Error fetching data from the database:", response)
 
-# Example usage:
-#print_database_content()

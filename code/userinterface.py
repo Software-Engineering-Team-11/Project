@@ -4,6 +4,8 @@ from tkinter import messagebox
 from typing import Dict, List
 from supabase_manager import supabase, print_database_content, insert_user
 
+# Code for UI
+
 # Make build_ui_instance a global variable to hold the pygubu.Builder instance
 build_ui_instance: pygubu.Builder = pygubu.Builder()
 
@@ -21,6 +23,8 @@ def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
     # Validate user data here if needed
     if len(new_users) < 6:
         messagebox.showerror("Error", "Not enough user information provided.")
+
+
         return
 
     # Check each user to see if it already exists in Supabase

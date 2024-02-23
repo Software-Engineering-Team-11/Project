@@ -6,6 +6,7 @@ import userinterface
 from users import User
 import supabase_manager
 from supabase_manager import supabase,create_client
+from networking import Networking
 
 # Create the Supabase client
 supabase_client = supabase_manager.supabase

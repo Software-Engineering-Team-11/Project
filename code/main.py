@@ -5,7 +5,9 @@ import splashscreen
 import userinterface
 from users import User
 import supabase_manager
+
 from supabase_manager import supabase,create_client, insert_user, print_database_content
+from networking import Networking
 
 # Create the Supabase client
 supabase_client = supabase_manager.supabase

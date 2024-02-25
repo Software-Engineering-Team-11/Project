@@ -37,6 +37,21 @@ def insert_user(username, user_id):
             print("Failed to insert user due to an unknown error.")
             print(e)
 
+# def insert_user(username, user_id):
+#     # Define the data to be inserted
+#     data = {'username': username, 'user_id': user_id}
+
+#     # Insert data into "users" table
+#     try:
+#         response = supabase.table('users').insert(data).execute()
+#         print("User inserted successfully.")
+#     except APIError as e:
+#         if e.code == '23505':
+#             print(f"Failed to insert user: {e.message}")
+#         else:
+#             print("Failed to insert user due to an unknown error.")
+#             print(e)
+
 
 # PRINTING DATABASE CONTENT METHOD
 def print_database_content() -> None:

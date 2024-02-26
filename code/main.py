@@ -24,9 +24,9 @@ def build_root() -> tk.Tk:
         root.state("zoomed")
         # Load logo! change to ico extension
         try:
-            root.iconbitmap("/Users/rafaelbalassiano/Desktop/LASER_TAG/Project/images/logo.jpg")
+            root.iconbitmap("images\logo.jpg")     
         except:
-            root.iconbitmap("/Users/rafaelbalassiano/Desktop/LASER_TAG/Project/images/logo.jpg")
+            root.iconbitmap("../images/logo.jpg")
 
             # Force window to fill screen, place at top left
     width: int = root.winfo_screenwidth()

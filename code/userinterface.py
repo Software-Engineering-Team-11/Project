@@ -2,16 +2,36 @@ import tkinter as tk
 import pygubu
 from tkinter import messagebox
 from typing import Dict, List
+from networking import Networking
 from supabase_manager import supabase, print_database_content, insert_user
 
 # Code for UI
-
+networking = Networking()
 # Make build_ui_instance a global variable to hold the pygubu.Builder instance
 build_ui_instance: pygubu.Builder = pygubu.Builder()
+
+def createSockets() -> None:
+    if networking.setupSockets():
+        print("Sockets setup successful.")
+    else:
+        print("Failed to set up sockets.")
+    
+
 
 def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
     # Initialize lists to store user data
     user_data = []
+    
+    
+    #networking.transmit_equipment_code(23)
+    
+    for input_id, field_name in input_ids.items():
+        if "_equipment_id_" in input_id:
+            entry = build_ui_instance.get_object(input_id)
+            equipment_id = entry.get().strip()
+            if(len(equipment_id) != 0):
+                networking.transmit_equipment_code(equipment_id)
+                print(equipment_id)
 
     # Iterate over input IDs to retrieve user information
     for input_id, field_name in input_ids.items():
@@ -48,6 +68,7 @@ def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
 
     # Notify user of successful insertion
     messagebox.showinfo("Success", "User information inserted successfully.")
+    
 
 
 def builder(root:tk.Tk, users :dict) -> None:
@@ -81,7 +102,6 @@ def builder(root:tk.Tk, users :dict) -> None:
     for i in range(1, 16):
         for field in fields:
             input_ids[builder.get_object(f"{field}{i}", red_frame if "red" in field else blue_frame).winfo_id()] = f"{field}{i}"
-    
     print(input_ids)
 
     #  Place focus on the first entry field
@@ -100,9 +120,9 @@ def build_ui(root: tk.Tk, users: dict) -> None:
 
     try:
 
-        builder.add_from_file("ui/player_interface.ui")
+        build_ui_instance.add_from_file("ui/player_interface.ui")
     except:
-        builder.add_from_file("../ui/player_interface.ui")
+        build_ui_instance.add_from_file("../ui/player_interface.ui")
 
 
     main_frame: tk.Frame = build_ui_instance.get_object("master", root)
@@ -128,6 +148,8 @@ def build_ui(root: tk.Tk, users: dict) -> None:
                                                  red_frame if "red" in field else blue_frame)
             input_ids[entry_id] = entry_id  # Use the same ID for input_ids
             entry.bind("<Return>", lambda event, entry=entry: autofill_username(entry))
+
+
 
     submit_button = build_ui_instance.get_object("submit")
     submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids))

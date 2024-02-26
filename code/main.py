@@ -45,10 +45,11 @@ def build_root() -> tk.Tk:
 # build the root of the screen
 root: tk.Tk = build_root()
 
+userinterface.createSockets()
+
 # build the splash screen that dissapears in 3 seconds
 splash: splashscreen = splashscreen.build(root)
 root.after(3000, splash.destroy)
-
 root.after(3000, userinterface.build_ui, root, User)
 
 root.mainloop()

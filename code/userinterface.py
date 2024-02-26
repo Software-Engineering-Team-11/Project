@@ -9,89 +9,62 @@ from supabase_manager import supabase, print_database_content, insert_user
 # Make build_ui_instance a global variable to hold the pygubu.Builder instance
 build_ui_instance: pygubu.Builder = pygubu.Builder()
 
-
 def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
     # Initialize lists to store user data
-    new_users = []
+    user_data = []
 
     # Iterate over input IDs to retrieve user information
     for input_id, field_name in input_ids.items():
-        entry = build_ui_instance.get_object(input_id)
-        if entry:
-            new_users.append((field_name.split("_")[0], entry.get()))
+        if "_user_id_" in input_id:  # Check if the input ID corresponds to user ID
+            entry = build_ui_instance.get_object(input_id)
+            username_field = input_id.replace("user_id", "username")  # Get corresponding username field ID
+            username_entry = build_ui_instance.get_object(username_field)
+            user_id = entry.get().strip()
+            username = username_entry.get().strip()
+            if user_id and username:  # Only append if both user ID and username are not empty
+                user_data.append((user_id, username))
 
-    # Validate user data here if needed
-    if len(new_users) < 6:
-        messagebox.showerror("Error", "Not enough user information provided.")
-
-
-        return
-
-    # Check each user to see if it already exists in Supabase
-    for username, user_id in new_users:
+    # Insert user data into Supabase table
+    for user_id, username in user_data:
+        # Convert user_id to int (assuming user_id should be an integer)
         try:
-            user_id = int(user_id)  # Convert user_id to int (assuming user_id should be an integer)
+            user_id = int(user_id)
         except ValueError:
             messagebox.showerror("Error", "User ID must be a valid number.")
             return
 
-        # Query Supabase to check if the user exists
-        query = supabase.table("users").select("user_id").eq("username", username).eq("user_id", user_id)
+        # Check if user_id already exists in the users table
+        query = supabase.table("users").select("user_id").eq("username", username)
         response = query.execute()
 
-        # If the user doesn't exist, add them to Supabase
-        if "data" not in response or len(response["data"]) == 0:
+        # If user_id already exists, show error message and skip insertion
+        if response.data:
+            #messagebox.showerror("Error", f"User ID {user_id} already exists.")
+            continue
+        else:
+            # If user_id doesn't exist, add the user to the Supabase table
             insert_user(username, user_id)
+            messagebox.showinfo("Info", f"User ID {user_id} not found, adding to the database.")
 
     # Notify user of successful insertion
     messagebox.showinfo("Success", "User information inserted successfully.")
 
 
-# def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
-#     # Initialize lists to store user data
-#     user_data = []
-
-#     # Iterate over input IDs to retrieve user information
-#     for input_id, field_name in input_ids.items():
-#         entry = build_ui_instance.get_object(input_id)
-#         if entry:
-#             user_data.append((field_name.split("_")[0], entry.get()))
-
-#     # Validate user data here if needed
-#     if len(user_data) < 6:
-#         messagebox.showerror("Error", "Not enough user information provided.")
-#         return
-
-#     # Insert user data into Supabase table
-#     for i in range(0, len(user_data), 3):
-#         username = user_data[i][1]
-#         user_id = user_data[i + 1][1]
-
-#         # Convert user_id to int (assuming user_id should be an integer)
-#         try:
-#             user_id = int(user_id)
-#         except ValueError:
-#             messagebox.showerror("Error", "User ID must be a valid number.")
-#             return
-
-#         insert_user("username", 13)
-
-#     # Notify user of successful insertion
-#     messagebox.showinfo("Success", "User information inserted successfully.")
-
-
 def build_ui(root: tk.Tk, users: dict) -> None:
-    builder: pygubu.Builder = pygubu.Builder()
+    global build_ui_instance  # Make sure to use the global instance
+
     try:
+
         builder.add_from_file("ui/player_interface.ui")
     except:
         builder.add_from_file("../ui/player_interface.ui")
 
-    main_frame: tk.Frame = builder.get_object("master", root)
+
+    main_frame: tk.Frame = build_ui_instance.get_object("master", root)
     main_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
-    red_frame: tk.Frame = builder.get_object("red_team", main_frame)
-    blue_frame: tk.Frame = builder.get_object("blue_team", main_frame)
+    red_frame: tk.Frame = build_ui_instance.get_object("red_team", main_frame)
+    blue_frame: tk.Frame = build_ui_instance.get_object("blue_team", main_frame)
 
     input_ids: Dict[int, str] = {}
     fields: List[str] = {
@@ -105,15 +78,17 @@ def build_ui(root: tk.Tk, users: dict) -> None:
 
     for i in range(1, 16):
         for field in fields:
-            entry = builder.get_object(f"{field}{i}",
-                                       red_frame if "red" in field else blue_frame)
-            input_ids[entry.winfo_id()] = f"{field}{i}"
-            # entry.bind("<Return>", lambda event, entry=entry: autofill_user_id(entry))
-            entry.bind("<Return>", lambda event, entry=entry: autofill_user_name(entry))
+            entry_id = f"{field}{i}"  # Use the ID from XML directly
+            entry = build_ui_instance.get_object(entry_id,
+                                                 red_frame if "red" in field else blue_frame)
+            input_ids[entry_id] = entry_id  # Use the same ID for input_ids
+            entry.bind("<Return>", lambda event, entry=entry: autofill_username(entry))
 
-    builder.get_object("submit").configure(command=lambda: on_continue_clicked(root, users, input_ids))
-    
-def autofill_user_name(entry):
+    submit_button = build_ui_instance.get_object("submit")
+    submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids))
+
+
+def autofill_username(entry):
     user_id = entry.get().strip()
     if user_id:
         try:
@@ -122,53 +97,25 @@ def autofill_user_name(entry):
             while parent_frame.winfo_name() not in {"red_team", "blue_team"}:
                 parent_frame = parent_frame.master
 
-            # Get the corresponding user name entry widget
-            user_name_entry = parent_frame.nametowidget(entry.winfo_name().replace("user_id", "username"))
-            if user_name_entry:
+            # Get the corresponding username entry widget
+            username_entry = parent_frame.nametowidget(entry.winfo_name().replace("user_id", "username"))
+            if username_entry:
                 # Query Supabase to find username based on user ID
                 query = supabase.table("users").select("username").eq("user_id", user_id)
                 response = query.execute()
-                print("Response from Supabase:", response)  # Debugging statement
+                
+                # Print the response
+                print("Supabase Response:", response)
 
                 # Check if response contains data and retrieve username
-                if "data" in response and len(response["data"]) > 0:
-                    username = response["data"][0]["username"]
+                if response and response.data:
+                    username = response.data[0]["username"]
                     print("Retrieved username:", username)  # Debugging statement
-                    user_name_entry.delete(0, tk.END)  # Clear existing content
-                    user_name_entry.insert(0, username)
+                    username_entry.delete(0, tk.END)  # Clear existing content
+                    username_entry.insert(0, username)
                 else:
                     print("No username data found in response.")  # Debugging statement
             else:
                 print("Username entry widget not found.")
         except Exception as e:
             print(f"An error occurred: {e}")
-
-# def autofill_user_id(entry):
-#     username = entry.get().strip()
-#     if username:
-#         try:
-#             # Get the parent frame
-#             parent_frame = entry.master
-#             while parent_frame.winfo_name() not in {"red_team", "blue_team"}:
-#                 parent_frame = parent_frame.master
-
-#             # Get the corresponding user ID entry widget
-#             user_id_entry = parent_frame.nametowidget(entry.winfo_name().replace("username", "user_id"))
-#             if user_id_entry:
-#                 # Query Supabase to find user ID based on username
-#                 query = supabase.table("users").select("user_id").eq("username", username)
-#                 response = query.execute()
-#                 print("Response from Supabase:", response)  # Debugging statement
-
-#                 # Check if response contains data and retrieve user ID
-#                 if hasattr(response, "data") and len(response.data) > 0:
-#                     user_id = response.data[0]["user_id"]
-#                     print("Retrieved user ID:", user_id)  # Debugging statement
-#                     user_id_entry.delete(0, tk.END)  # Clear existing content
-#                     user_id_entry.insert(0, str(user_id))
-#                 else:
-#                     print("No user ID data found in response.")  # Debugging statement
-#             else:
-#                 print("User ID entry widget not found.")
-#         except Exception as e:
-#             print(f"An error occurred: {e}")

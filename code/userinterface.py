@@ -54,9 +54,11 @@ def build_ui(root: tk.Tk, users: dict) -> None:
     global build_ui_instance  # Make sure to use the global instance
 
     try:
-        build_ui_instance.add_from_file("/Users/rafaelbalassiano/Desktop/LASER_TAG/Project/ui/player_interface.ui")
+
+        builder.add_from_file("ui/player_interface.ui")
     except:
-        build_ui_instance.add_from_file("/Users/rafaelbalassiano/Desktop/LASER_TAG/Project/ui/player_interface.ui")
+        builder.add_from_file("../ui/player_interface.ui")
+
 
     main_frame: tk.Frame = build_ui_instance.get_object("master", root)
     main_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)

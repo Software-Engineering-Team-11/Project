@@ -22,9 +22,6 @@ def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
     # Initialize lists to store user data
     user_data = []
     
-    
-    #networking.transmit_equipment_code(23)
-    
     for input_id, field_name in input_ids.items():
         if "_equipment_id_" in input_id:
             entry = build_ui_instance.get_object(input_id)
@@ -68,7 +65,13 @@ def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
 
     # Notify user of successful insertion
     messagebox.showinfo("Success", "User information inserted successfully.")
+
+    # Remove frame from screen without destroying it
+    # self.main_frame.destroy()
     
+    # Build the player action screen
+    import countdown
+    countdown.build(root, user_data, networking)
 
 
 def builder(root:tk.Tk, users :dict) -> None:

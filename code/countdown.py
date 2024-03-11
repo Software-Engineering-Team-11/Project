@@ -25,7 +25,6 @@ def update_timer(timer_label: tk.Label, seconds: int, main_frame: tk.Frame, netw
     else:
         # Destroy main frame and start game, transmitting start game code
         main_frame.destroy()
-        # network.transmit_start_game_code()
 
         # import play_action 
         # play_action.build(network, users, root)
@@ -49,7 +48,11 @@ def update_video(video_label: tk.Label, cap: cv2.VideoCapture, frame_rate: int, 
 def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     # Load the UI file and create the builder
     builder: pygubu.Builder = pygubu.Builder()
-    builder.add_from_file("ui/countdown.ui")
+    try:
+        builder.add_from_file("ui/countdown.ui") 
+    except:
+        
+        builder.add_from_file("../ui/countdown.ui")
 
     # Based on OS, play the countdown sound
     # Play sound asynchronously to prevent freezing
@@ -63,13 +66,13 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     main_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     # For each user entry, fill in username for each team
-    print("USERSSSSSSSSSSSS")
-    print(users)
-    for team in users:
-        count: int = 1
-        for user in users[team]:
-            builder.get_object(f"{team}_username_{count}", main_frame).config(text=user.username)
-            count += 1
+
+    # for team in users:
+    #     count: int = 1
+    #     for user in users[team]:
+    #         builder.get_object(f"{team}_username_{count}", main_frame).config(text=user.username)
+    #         count += 1
+    #         print(users)
 
     # Get the time frame and label from the UI file
     countdown_frame: tk.Frame = builder.get_object("countdown_frame", main_frame)
@@ -86,9 +89,9 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     video_width: int = 500
     video_height: int = 500
     seconds: int = 30
-
+    network.sendStart() #Remove
     # Start the countdown
     update_timer(timer_label, seconds, main_frame, network, users, root)
-
     # Start displaying the video
     update_video(video_label, cap, frame_rate, video_width, video_height)
+    #network.sendStart()

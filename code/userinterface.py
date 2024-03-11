@@ -20,7 +20,7 @@ def createSockets() -> None:
 
 def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
     # Initialize lists to store user data
-    user_data = []
+    users = []
     
     for input_id, field_name in input_ids.items():
         if "_equipment_id_" in input_id:
@@ -39,10 +39,10 @@ def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
             user_id = entry.get().strip()
             username = username_entry.get().strip()
             if user_id and username:  # Only append if both user ID and username are not empty
-                user_data.append((user_id, username))
+                users.append((user_id, username))
 
     # Insert user data into Supabase table
-    for user_id, username in user_data:
+    for user_id, username in users:
         # Convert user_id to int (assuming user_id should be an integer)
         try:
             user_id = int(user_id)
@@ -71,7 +71,7 @@ def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
     
     # Build the player action screen
     import countdown
-    countdown.build(root, user_data, networking)
+    countdown.build(root, users, networking)
 
 
 def builder(root:tk.Tk, users :dict) -> None:

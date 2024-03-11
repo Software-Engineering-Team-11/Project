@@ -44,6 +44,9 @@ class Networking:
         data, address = self.receiveSocket.recvfrom(BUFFER)
         return data, address
     
+    def sendStart(self) -> None:
+        self.transmitSocket.sendto(str.encode(str(202)), (SEND_ADDRESS))
+    
     def transmit_equipment_code(self, equipment_code: str) -> bool:
         # Enable broadcasts at the syscall level and priviledged process
         # Transmit equipment_code on port 7500 Send 

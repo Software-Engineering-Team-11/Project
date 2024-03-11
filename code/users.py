@@ -1,16 +1,17 @@
 class User:
     rownum: int 
     equipment_ID: int
-    user_ID: int
+    user_id: int
+    redTeam: bool
     username: str
     game_score: int
     has_hit_base: bool
     
     # from UserInterface UI get this information in row form
-    def __init__(self, rownum, equipment_ID, user_ID, username) -> None:
+    def __init__(self, rownum, equipment_ID, user_id, username) -> None:
         self.rownum = rownum
         self.equipment_ID = equipment_ID
-        self.user_ID = user_ID
+        self.user_id = user_id
         self.username = username
         self.game_score = 0
         self.has_hit_base = False

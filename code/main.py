@@ -5,6 +5,7 @@ import splashscreen
 import userinterface
 from users import User
 import supabase_manager
+from typing import Dict, List
 
 from supabase_manager import supabase,create_client, insert_user, print_database_content
 from networking import Networking
@@ -41,6 +42,13 @@ def build_root() -> tk.Tk:
 # --------------------------------
 # MAIN!
 # --------------------------------
+
+
+users: Dict[str, List[User]] = {
+"blue": [],
+"red": []
+}
+
 
 # build the root of the screen
 root: tk.Tk = build_root()

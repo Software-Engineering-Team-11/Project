@@ -2,14 +2,23 @@ import tkinter as tk
 import pygubu
 from tkinter import messagebox
 from typing import Dict, List
+import countdown
 from networking import Networking
 from supabase_manager import supabase, print_database_content, insert_user
 
-# Code for UI
+
+# --------------------------------
+# CODE FOR UI!
+# --------------------------------
 networking = Networking()
 # Make build_ui_instance a global variable to hold the pygubu.Builder instance
 build_ui_instance: pygubu.Builder = pygubu.Builder()
 
+
+
+# --------------------------------
+# CREATE THE SOCKETS!
+# --------------------------------
 def createSockets() -> None:
     if networking.setupSockets():
         print("Sockets setup successful.")
@@ -18,62 +27,62 @@ def createSockets() -> None:
     
 
 
+# --------------------------------
+# WHEN CONTINUE IS CLICKED!
+# --------------------------------
 def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
     # Initialize lists to store user data
-    user_data = []
-    
-    for input_id, field_name in input_ids.items():
-        if "_equipment_id_" in input_id:
-            entry = build_ui_instance.get_object(input_id)
-            equipment_id = entry.get().strip()
-            if(len(equipment_id) != 0):
-                networking.transmit_equipment_code(equipment_id)
-                print(equipment_id)
-
+    user_data:dict = []
+   
     # Iterate over input IDs to retrieve user information
     for input_id, field_name in input_ids.items():
-        if "_user_id_" in input_id:  # Check if the input ID corresponds to user ID
-            entry = build_ui_instance.get_object(input_id)
-            username_field = input_id.replace("user_id", "username")  # Get corresponding username field ID
-            username_entry = build_ui_instance.get_object(username_field)
-            user_id = entry.get().strip()
-            username = username_entry.get().strip()
-            if user_id and username:  # Only append if both user ID and username are not empty
-                user_data.append((user_id, username))
+       if "_user_id_" in input_id:  # Check if the input ID corresponds to user ID
+           entry = build_ui_instance.get_object(input_id)
+           username_field = input_id.replace("user_id", "username")  # Get corresponding username field ID
+           username_entry = build_ui_instance.get_object(username_field)
+           user_id = entry.get().strip()
+           username = username_entry.get().strip()
+           if user_id and username:  # Only append if both user ID and username are not empty
+               # Determine the team based on the input ID
+               team = "red" if "red" in input_id else "blue"
+               user_data.append((user_id, username, team))
 
-    # Insert user data into Supabase table
-    for user_id, username in user_data:
-        # Convert user_id to int (assuming user_id should be an integer)
+
+   # Insert user data into Supabase table
+    for user_id, username, team in user_data:
+       # Convert user_id to int (assuming user_id should be an integer)
         try:
-            user_id = int(user_id)
+           user_id = int(user_id)
         except ValueError:
-            messagebox.showerror("Error", "User ID must be a valid number.")
-            return
+           messagebox.showerror("Error", "User ID must be a valid number.")
+           return
 
-        # Check if user_id already exists in the users table
+
+       # Check if user_id already exists in the users table
         query = supabase.table("users").select("user_id").eq("username", username)
         response = query.execute()
 
-        # If user_id already exists, show error message and skip insertion
+
+       # If user_id already exists, show error message and skip insertion
         if response.data:
-            #messagebox.showerror("Error", f"User ID {user_id} already exists.")
-            continue
+           #messagebox.showerror("Error", f"User ID {user_id} already exists.")
+           continue
         else:
-            # If user_id doesn't exist, add the user to the Supabase table
-            insert_user(username, user_id)
-            messagebox.showinfo("Info", f"User ID {user_id} not found, adding to the database.")
+           # If user_id doesn't exist, add the user to the Supabase table
+           insert_user(entry, username, user_id, users, team)
+           messagebox.showinfo("Info", f"User ID {user_id} not found, adding to the database.")
 
-    # Notify user of successful insertion
+
+   # Notify user of successful insertion
     messagebox.showinfo("Success", "User information inserted successfully.")
-
-    # Remove frame from screen without destroying it
-    # self.main_frame.destroy()
-    
-    # Build the player action screen
-    import countdown
+   
+    # Countdown screen built
     countdown.build(root, user_data, networking)
 
 
+# --------------------------------
+# SCREEN BUILDER WITH ALL THE ATTRIBUTES!
+# --------------------------------
 def builder(root:tk.Tk, users :dict) -> None:
     builder: pygubu.Builder = pygubu.Builder()
     try:
@@ -112,12 +121,31 @@ def builder(root:tk.Tk, users :dict) -> None:
 
     # Testing submit button
     builder.get_object("submit").configure(command=lambda: on_continue_clicked(root,users,input_ids))
-
-    # data = supabase.table("users").select("*").execute()
-    # print(data)
     
 
+# --------------------------------
+# CLEAR ENTRY FIELDS!
+# --------------------------------
+def clear_entry_fields(builder:pygubu.builder):
+    print("F12 pressed. Clearing entry fields")
 
+    #Clear all widget contents
+    def clear_widgets(widget):
+        if isinstance(widget,tk.Entry):
+            #clear content
+            widget.delete(0,tk.END)
+        elif hasattr(widget, 'winfo_children'):
+            #recursively traverse over all widget children
+            for child_widget in widget.winfo_children(): 
+                clear_widgets(child_widget)
+
+    root_widget=builder.get_object("master")
+    clear_widgets(root_widget)
+
+
+# --------------------------------
+# BUILD SCREEN!
+# --------------------------------
 def build_ui(root: tk.Tk, users: dict) -> None:
     global build_ui_instance  # Make sure to use the global instance
 
@@ -150,42 +178,60 @@ def build_ui(root: tk.Tk, users: dict) -> None:
             entry = build_ui_instance.get_object(entry_id,
                                                  red_frame if "red" in field else blue_frame)
             input_ids[entry_id] = entry_id  # Use the same ID for input_ids
-            entry.bind("<Return>", lambda event, entry=entry: autofill_username(entry))
+            team="blue" if "blue" in field else "red"
+            entry.bind ("<Return>", lambda event, entry=entry, team=team: autofill_username(entry,users,team))
 
 
-
+    root.bind("<KeyPress-F5>", lambda event: on_continue_clicked(root, users, input_ids))
     submit_button = build_ui_instance.get_object("submit")
     submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids))
 
+    # Clear entry fields
+    root.bind("<F12>", lambda event: clear_entry_fields(build_ui_instance))
 
-def autofill_username(entry):
-    user_id = entry.get().strip()
-    if user_id:
-        try:
-            # Get the parent frame
-            parent_frame = entry.master
-            while parent_frame.winfo_name() not in {"red_team", "blue_team"}:
-                parent_frame = parent_frame.master
 
-            # Get the corresponding username entry widget
-            username_entry = parent_frame.nametowidget(entry.winfo_name().replace("user_id", "username"))
-            if username_entry:
-                # Query Supabase to find username based on user ID
-                query = supabase.table("users").select("username").eq("user_id", user_id)
-                response = query.execute()
-                
-                # Print the response
-                print("Supabase Response:", response)
+# --------------------------------
+# AUTOFILL USERNAME WHEN ENTER IS CLICKED!
+# --------------------------------
+def autofill_username(entry, users, team):
+   user_id = entry.get().strip()
+   if user_id:
+       try:
+           # Get the parent frame
+           parent_frame = entry.master
+           while parent_frame.winfo_name() not in {"red_team", "blue_team"}:
+               parent_frame = parent_frame.master
 
-                # Check if response contains data and retrieve username
-                if response and response.data:
-                    username = response.data[0]["username"]
-                    print("Retrieved username:", username)  # Debugging statement
-                    username_entry.delete(0, tk.END)  # Clear existing content
-                    username_entry.insert(0, username)
-                else:
-                    print("No username data found in response.")  # Debugging statement
-            else:
-                print("Username entry widget not found.")
-        except Exception as e:
-            print(f"An error occurred: {e}")
+           # Determine the team based on the parent frame
+           team = "red_team" if parent_frame.winfo_name() == "red_team" else "blue_team"
+
+           # Get the corresponding username entry widget
+           username_entry = parent_frame.nametowidget(entry.winfo_name().replace("user_id", "username"))
+           if username_entry:
+               # Query Supabase to find username based on user ID
+               query = supabase.table("users").select("username").eq("user_id", user_id)
+               response = query.execute()
+               
+               # Print the response
+               print("Supabase Response:", response)
+
+               # Check if response contains data and retrieve username
+               if response and response.data:
+                   username = response.data[0]["username"]
+                   print("Retrieved username:", username)  # Debugging statement
+                   username_entry.delete(0, tk.END)  # Clear existing content
+                   username_entry.insert(0, username)
+                   print("Username autofilled to widget number:", username_entry.winfo_id())  # Print widget number
+                   print("User team attribute:", "red" if "red" in parent_frame.winfo_name() else "blue")  # Print team attribute
+                   print("User's team set to:", team)
+
+                   # Update the team attribute of the corresponding user
+                   #users[user_id]["team"] = team
+                #    update_user_team(user_id, team)
+
+               else:
+                   print("No username data found in response.")  # Debugging statement
+           else:
+               print("Username entry widget not found.")
+       except Exception as e:
+           print(f"An error occurred: {e}")

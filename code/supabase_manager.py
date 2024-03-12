@@ -22,35 +22,30 @@ supabase = create_client(url, key)
 # Function to insert user into "users" table
 from postgrest.exceptions import APIError
 
-def insert_user(username, user_id):
-    # Define the data to be inserted
-    data = {'username': username, 'user_id': user_id}
+# --------------------------------
+# INSERT USER TO SUPABASE!
+# --------------------------------
+def insert_user(entry, username, user_id, users, team=None):
+   # Define the data to be inserted
+   data = {'username': username, 'user_id': user_id}
 
-    # Insert data into "users" table
-    try:
-        response = supabase.table('users').insert(data).execute()
-        print("User inserted successfully.")
-    except APIError as e:
-        if e.code == '23505':
-            print(f"Failed to insert user: {e.message}")
-        else:
-            print("Failed to insert user due to an unknown error.")
-            print(e)
 
-# def insert_user(username, user_id):
-#     # Define the data to be inserted
-#     data = {'username': username, 'user_id': user_id}
+   # Insert data into "users" table
+   try:
+       response = supabase.table('users').insert(data).execute()
+       print("User inserted successfully.")
+       # Set the team attribute if provided
+       if team:
+           print(f"User's team set to: {team}")
+   except APIError as e:
+       if e.code == '23505':
+           print(f"Failed to insert user: {e.message}")
+       else:
+           print("Failed to insert user due to an unknown error.")
+           print(e)
 
-#     # Insert data into "users" table
-#     try:
-#         response = supabase.table('users').insert(data).execute()
-#         print("User inserted successfully.")
-#     except APIError as e:
-#         if e.code == '23505':
-#             print(f"Failed to insert user: {e.message}")
-#         else:
-#             print("Failed to insert user due to an unknown error.")
-#             print(e)
+
+   print("User attributes:", data)  # Print user attributes
 
 
 # PRINTING DATABASE CONTENT METHOD

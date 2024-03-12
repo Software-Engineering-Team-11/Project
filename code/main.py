@@ -12,7 +12,9 @@ from networking import Networking
 # Create the Supabase client
 supabase_client = supabase_manager.supabase
 
-
+# --------------------------------
+# BUILD ROOT OF SCREEN!
+# --------------------------------
 def build_root() -> tk.Tk:
     # Build main window, set title, make fullscreen
     root: tk.Tk = tk.Tk()
@@ -24,9 +26,9 @@ def build_root() -> tk.Tk:
         root.state("zoomed")
         # Load logo! change to ico extension
         try:
-            root.iconbitmap("images\logo.jpg")     
+            root.iconbitmap("assets\logo.jpg")     
         except:
-            root.iconbitmap("../images/logo.jpg")
+            root.iconbitmap("../assets/logo.jpg")
 
             # Force window to fill screen, place at top left
     width: int = root.winfo_screenwidth()

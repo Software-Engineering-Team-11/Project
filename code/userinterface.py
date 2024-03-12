@@ -74,7 +74,7 @@ def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
 
 
    # Notify user of successful insertion
-    messagebox.showinfo("Success", "User information inserted successfully.")
+    messagebox.showinfo("Success", "All users inserted. Lets start the game!")
    
     # Countdown screen built
     countdown.build(root, user_data, networking)

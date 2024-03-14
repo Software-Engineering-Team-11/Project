@@ -9,7 +9,7 @@ git clone https://github.com/Software-Engineering-Team-11/Project.git
 
 After you have cloned the repository open the project in the terminal
 ```
-cd /path/to/Project
+cd Project
 ```
 
 ## NEEDED DOWNLOADS
@@ -42,9 +42,13 @@ Windows users install these packages:
 ```
 
 ## TO RUN CODE
-To run the project use the command:
+To run the project for non-windows users:
 ```
 python3 code\main.py
+```
+To run the project for windows users:
+```
+python code\main.py
 ```
 
 After using this command, the player entry screen will pop up. Fill in the user ID field. Once you insert the ID, press the "Enter" key. This action will auto-populate the username if the player is in Supabase. If the user does not exist, they will be added to Supabase for future reference. Next, input the equipment ID and click "Continue" to bring you to the countdown screen.

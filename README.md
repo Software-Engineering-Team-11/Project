@@ -4,12 +4,12 @@ This project is still being developed as part of the 2024 semester of the Softwa
 ## DOWNLOAD THE PROJECT
 You can obtain the project either by downloading it as a ZIP file or by cloning the repository to your local machine. To clone the repository, use the following command:
 ```
-$ git clone https://github.com/Software-Engineering-Team-11/Project.git
+git clone https://github.com/Software-Engineering-Team-11/Project.git
 ```
 
 After you have cloned the repository open the project in the terminal
 ```
-$ cd /path/to/Project
+cd /path/to/Project
 ```
 
 ## NEEDED DOWNLOADS

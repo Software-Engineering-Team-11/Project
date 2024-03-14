@@ -19,7 +19,7 @@ First make sure you have pip installed, you can use this command to install it:
 ```
 sudo apt install python3-pip
 ```
-Then install these packages:
+Non-windows users install these packages:
 ```
 -pip install python-dotenv
 -pip install tk
@@ -30,6 +30,15 @@ Then install these packages:
 -pip install opencv-python
 -pip install pil.imagetk
 -pip install playsound
+```
+Windows users install these packages:
+```
+-pip install python-dotenv
+-pip install tk
+-pip install supabase-py
+-pip install pygubu
+-pip install pillow
+-pip install opencv-python
 ```
 
 ## TO RUN CODE

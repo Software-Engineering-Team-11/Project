@@ -15,19 +15,19 @@ cd /path/to/Project
 ## NEEDED DOWNLOADS
 In order for this project to run you will need to download the following:
 
-If using the terminal make sure pip is installed. You can use this command to install it:
+First make sure you have pip installed, you can use this command to install it:
 ```
-sudo apt install pip
+sudo apt install python3-pip
 ```
 Then install these packages:
 ```
--dotenv (python-dotenv)
--tkinter(TCL 8.6)
--supabase (supabase-py)
--pygubu
--pillow (PIL)
--cv2 (opencv-python)
-```
+-pip install python-dotenv
+-pip install tk
+-pip install supabase-py
+-pip install pygubu
+-pip install pillow
+-pip install opencv-python
+-pip install pil.imagetk
 
 ## TO RUN CODE
 To run the project use the command:
@@ -35,7 +35,7 @@ To run the project use the command:
 python code\main.py
 ```
 
-When user_id entered, click the "enter" key to autopopulate. If user does not exist will be added to Supabase for future reference. After inputting user_id click continue.
+After using this command, the player entry screen will pop up. Fill in the user ID field. Once you insert the ID, press the "Enter" key. This action will auto-populate the username if the player is in Supabase. If the user does not exist, they will be added to Supabase for future reference. Next, input the equipment ID and click "Continue" to bring you to the countdown screen.
 
 ## TEAM MEMBERS
 ```

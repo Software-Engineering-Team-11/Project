@@ -14,13 +14,19 @@ $ cd /path/to/Project
 
 ## NEEDED DOWNLOADS
 In order for this project to run you will need to download the following:
+
+If using the terminal make sure pip is installed. You can use this command to install it:
 ```
--dotenv 
+sudo apt install pip
+```
+Then install these packages:
+```
+-dotenv (python-dotenv)
 -tkinter(TCL 8.6)
--supabase
+-supabase (supabase-py)
 -pygubu
 -pillow (PIL)
--cv2 (opencv)
+-cv2 (opencv-python)
 ```
 
 ## TO RUN CODE
@@ -29,7 +35,7 @@ To run the project use the command:
 python code\main.py
 ```
 
-When user_id entered, click the "enter" key to autopopulate. If user does not exist will be added to Supabase for future reference.
+When user_id entered, click the "enter" key to autopopulate. If user does not exist will be added to Supabase for future reference. After inputting user_id click continue.
 
 ## TEAM MEMBERS
 ```

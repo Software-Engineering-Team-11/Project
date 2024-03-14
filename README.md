@@ -1,6 +1,6 @@
 How to run code: 
 -Needed Downloads- 
-*dotenv *tkinter *supabase *pygubu *pillow (PIL) *cv2 (opencv)
+*dotenv *tkinter(TCL 8.6) *supabase *pygubu *pillow (PIL) *cv2 (opencv)
 command: python code\main.py When user_id entered, click the "enter" key to autopopulate. If user does not exist will be added to Supabase for future reference.
 
 GitHub Cross Reference: Cali Brewer - crb054 

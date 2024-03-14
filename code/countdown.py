@@ -62,7 +62,7 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     try:
         builder.add_from_file("ui/countdown.ui")
     except:
-        builder.add_from_file("Project/ui/countdown.ui")
+        builder.add_from_file("../ui/countdown.ui")
 
     # Based on OS, play the countdown sound
     # Play sound asynchronously to prevent freezing
@@ -70,12 +70,12 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
         try:
             winsound.PlaySound("assets/waitingroom.wav", winsound.SND_ASYNC)
         except:
-            winsound.PlaySound("Project/assets/waitingroom.wav", winsound.SND_ASYNC)
+            winsound.PlaySound("../assets/waitingroom.wav", winsound.SND_ASYNC)
     else:
         try:
             playsound.playsound("assets/waitingroom.wav", block=False)
         except:
-            playsound.playsound("Project/assets/waitingroom.wav", block=False)
+            playsound.playsound("../assets/waitingroom.wav", block=False)
 
     # Place the main frame in the center of the root window
     main_frame: tk.Frame = builder.get_object("master", root)
@@ -108,7 +108,7 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     try:
         cap: cv2.VideoCapture = cv2.VideoCapture("assets/wait.mp4")
     except:
-        cap: cv2.VideoCapture = cv2.VideoCapture("Project/assets/wait.mp4")
+        cap: cv2.VideoCapture = cv2.VideoCapture("../assets/wait.mp4")
     
     # Define video property variables, countdown length in seconds
     frame_rate: int = int(cap.get(cv2.CAP_PROP_FPS))

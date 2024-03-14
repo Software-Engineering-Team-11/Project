@@ -88,7 +88,7 @@ def builder(root:tk.Tk, users :dict) -> None:
     try:
         builder.add_from_file("ui/player_interface.ui")
     except:
-        builder.add_from_file("Project/ui/player_interface.ui")
+        builder.add_from_file("../ui/player_interface.ui")
     # Place the main frame in the center of the root window
     # make unresizable
     main_frame: tk.Frame = builder.get_object("master", root)
@@ -150,7 +150,6 @@ def build_ui(root: tk.Tk, users: dict) -> None:
     global build_ui_instance  # Make sure to use the global instance
 
     try:
-
         build_ui_instance.add_from_file("ui/player_interface.ui")
     except:
         build_ui_instance.add_from_file("../ui/player_interface.ui")

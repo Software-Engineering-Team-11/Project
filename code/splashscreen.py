@@ -5,10 +5,10 @@ import tkinter as tk
 def build(root: tk.Tk) -> tk.Label:
     # Load the splash screen image
     try:
-        splash_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open("assets\splash.jpg"))
+        splash_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open("assets/splash.jpg"))
     
     except:
-        splash_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open("Project/assets/splash.jpg"))
+        splash_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open("../assets/splash.jpg"))
 
 
 # --------------------------------

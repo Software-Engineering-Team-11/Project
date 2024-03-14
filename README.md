@@ -28,6 +28,7 @@ Then install these packages:
 -pip install pillow
 -pip install opencv-python
 -pip install pil.imagetk
+```
 
 ## TO RUN CODE
 To run the project use the command:

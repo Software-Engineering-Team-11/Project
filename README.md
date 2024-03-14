@@ -19,6 +19,12 @@ First make sure you have pip installed, you can use this command to install it:
 ```
 sudo apt install python3-pip
 ```
+
+If pip does not work use:
+```
+sudo apt install Python-
+```
+
 Non-windows users install these packages:
 ```
 -pip install python-dotenv

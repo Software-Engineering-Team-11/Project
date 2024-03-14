@@ -59,14 +59,23 @@ def update_video(video_label: tk.Label, cap: cv2.VideoCapture, frame_rate: int, 
 def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     # Load the UI file and create the builder
     builder: pygubu.Builder = pygubu.Builder()
-    builder.add_from_file("ui/countdown.ui")
+    try:
+        builder.add_from_file("ui/countdown.ui")
+    except:
+        builder.add_from_file("Project/ui/countdown.ui")
 
     # Based on OS, play the countdown sound
     # Play sound asynchronously to prevent freezing
     if os.name == "nt":
-        winsound.PlaySound("assets/waitingroom.wav", winsound.SND_ASYNC)
+        try:
+            winsound.PlaySound("assets/waitingroom.wav", winsound.SND_ASYNC)
+        except:
+            winsound.PlaySound("Project/assets/waitingroom.wav", winsound.SND_ASYNC)
     else:
-        playsound.playsound("assets/waitingroom.wav", block=False)
+        try:
+            playsound.playsound("assets/waitingroom.wav", block=False)
+        except:
+            playsound.playsound("Project/assets/waitingroom.wav", block=False)
 
     # Place the main frame in the center of the root window
     main_frame: tk.Frame = builder.get_object("master", root)
@@ -96,7 +105,10 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     # Make the video label and load video
     video_label: tk.Label = tk.Label(video_frame)
     video_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-    cap: cv2.VideoCapture = cv2.VideoCapture("assets/wait.mp4")
+    try:
+        cap: cv2.VideoCapture = cv2.VideoCapture("assets/wait.mp4")
+    except:
+        cap: cv2.VideoCapture = cv2.VideoCapture("Project/assets/wait.mp4")
     
     # Define video property variables, countdown length in seconds
     frame_rate: int = int(cap.get(cv2.CAP_PROP_FPS))

@@ -8,7 +8,7 @@ def build(root: tk.Tk) -> tk.Label:
         splash_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open("assets\splash.jpg"))
     
     except:
-        splash_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open("../assets/splash.jpg"))
+        splash_image: ImageTk.PhotoImage = ImageTk.PhotoImage(Image.open("Project/assets/splash.jpg"))
 
 
 # --------------------------------

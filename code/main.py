@@ -22,13 +22,13 @@ def build_root() -> tk.Tk:
     root.configure(background="white")
 
     # If platform is not Linux, set to zoomed and include icon
-    if os.name != "zoomed":
+    if os.name != "posix":
         root.state("zoomed")
         # Load logo! change to ico extension
         try:
             root.iconbitmap("assets\logo.jpg")     
         except:
-            root.iconbitmap("../assets/logo.jpg")
+            root.iconbitmap("Project/assets/logo.jpg")
 
             # Force window to fill screen, place at top left
     width: int = root.winfo_screenwidth()

@@ -193,7 +193,10 @@ def build_ui(root: tk.Tk, users: dict) -> None:
 # AUTOFILL USERNAME WHEN ENTER IS CLICKED!
 # --------------------------------
 def autofill_username(entry, users, team):
-   user_id = entry.get().strip()
+   entry_name = entry.winfo_name()
+   print(entry)
+   if "_user_id_" in entry_name:  # Check if the input ID corresponds to user ID
+    user_id = entry.get().strip()
    if user_id:
        try:
            # Get the parent frame

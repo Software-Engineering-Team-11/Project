@@ -13,6 +13,9 @@ cd Project
 ```
 
 ## NEEDED DOWNLOADS
+
+*** Ensure all previous versions of the following are uninstalled if you have installed them for prior projects. ***S
+
 In order for this project to run you will need to download the following:
 
 First make sure you have pip installed, you can use this command to install it:
@@ -64,6 +67,14 @@ After using this command, the player entry screen will pop up. Fill in the user 
 -- Warning this step requires you to have an understanding of network transmisions and not be blocking UDP transmitions on the port used --
 
 Within the Tester folder you will find a program called testclient.py this program allows you to listen to the signals sent by the server client.
+
+To run the project for non-windows users:
+```
+python3 tester\testClient.py
+```
+To run the project for windows users:
+```
+python tester\testClient.py
 
 ## TEAM MEMBERS
 ```

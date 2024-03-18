@@ -31,9 +31,12 @@ def createSockets() -> None:
 # WHEN CONTINUE IS CLICKED!
 # --------------------------------
 def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
-    # Initialize lists to store user data
+    
+    if validate_equipment_ids(input_ids):
+        print("Checked")
+    else:
+        return
     user_data:dict = []
-   
     # Iterate over input IDs to retrieve user information
     for input_id, field_name in input_ids.items():
        if "_user_id_" in input_id:  # Check if the input ID corresponds to user ID
@@ -79,6 +82,7 @@ def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
     # Countdown screen built
     countdown.build(root, user_data, networking)
 
+    
 
 # --------------------------------
 # SCREEN BUILDER WITH ALL THE ATTRIBUTES!
@@ -187,6 +191,28 @@ def build_ui(root: tk.Tk, users: dict) -> None:
 
     # Clear entry fields
     root.bind("<F12>", lambda event: clear_entry_fields(build_ui_instance))
+
+
+# --------------------------------
+# Check that all users have a equipment ID!
+# --------------------------------
+
+def validate_equipment_ids(input_ids: Dict[int, str]) -> bool:
+    for input_id, field_name in input_ids.items():
+        if "_equipment_id_" in field_name:  # we only want to check equipment Id fields
+            entry = build_ui_instance.get_object(input_id)
+            user_id_field_name = field_name.replace("_equipment_id_", "_user_id_") # swaps field names so we can  check if userID is not empty
+            user_id_entry = build_ui_instance.get_object(user_id_field_name)
+            user_id = user_id_entry.get().strip() # get value of user_id
+            if user_id:  # is empty check
+                equipment_id = entry.get().strip()
+                if not equipment_id:  # if equipment ID empty return false and show error
+                    field_number = field_name.split("_")[-1]
+                    messagebox.showerror("Warning", f"Equipment ID for {field_name} cannot be empty.")
+                    return False
+    return True
+
+
 
 
 # --------------------------------

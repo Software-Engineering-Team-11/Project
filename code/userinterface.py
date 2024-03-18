@@ -37,6 +37,15 @@ def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
     else:
         return
     user_data:dict = []
+    
+    for input_id, field_name in input_ids.items():
+        if "_equipment_id_" in input_id:
+            entry = build_ui_instance.get_object(input_id)
+            equipment_id = entry.get().strip()
+            if(len(equipment_id) != 0):
+                networking.transmit_equipment_code(equipment_id)
+                print("Transmited EquipmentID #{id}" ,equipment_id)
+    
     # Iterate over input IDs to retrieve user information
     for input_id, field_name in input_ids.items():
        if "_user_id_" in input_id:  # Check if the input ID corresponds to user ID
@@ -222,7 +231,9 @@ def autofill_username(entry, users, team):
    entry_name = entry.winfo_name()
    print(entry)
    if "_user_id_" in entry_name:  # Check if the input ID corresponds to user ID
-    user_id = entry.get().strip()
+        user_id = entry.get().strip()
+   else:
+       return
    if user_id:
        try:
            # Get the parent frame

@@ -59,6 +59,12 @@ python code\main.py
 
 After using this command, the player entry screen will pop up. Fill in the user ID field. Once you insert the ID, press the "Enter" key. This action will auto-populate the username if the player is in Supabase. If the user does not exist, they will be added to Supabase for future reference. Next, input the equipment ID and click "Continue" to bring you to the countdown screen.
 
+## TO RUN TEST SOFTWARE
+
+-- Warning this step requires you to have an understanding of network transmisions and not be blocking UDP transmitions on the port used --
+
+Within the Tester folder you will find a program called testclient.py this program allows you to listen to the signals sent by the server client.
+
 ## TEAM MEMBERS
 ```
 Cali Brewer - crb054 

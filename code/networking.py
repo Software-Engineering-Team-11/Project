@@ -53,3 +53,13 @@ class Networking:
         except Exception as e:
             print(e)
             return False
+        
+    def transmit_start_game_code(self) -> bool:
+    # Transmit start game code to the broadcast address
+        try:
+            self.transmitSocket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            self.transmitSocket.sendto(str.encode(str(START_GAME)), (IP, SERVER_RECEIVE_PORT))
+            return True
+        except Exception as e:
+            print(e)
+            return False

@@ -29,10 +29,10 @@ def update_timer(timer_label: tk.Label, seconds: int, main_frame: tk.Frame, netw
     else:
         # Destroy main frame and start game, transmitting start game code
         main_frame.destroy()
-        # network.transmit_start_game_code()
+        network.transmit_start_game_code()
 
-        # import play_action 
-        # play_action.build(network, users, root)
+        import player_action 
+        player_action.build(network, users, root)
 
 # --------------------------------
 # UPDATE VIDEO FUNCTION!
@@ -114,7 +114,7 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     frame_rate: int = int(cap.get(cv2.CAP_PROP_FPS))
     video_width: int = 500
     video_height: int = 500
-    seconds: int = 35
+    seconds: int = 3
 
 # --------------------------------
 # START THE COUNTDOWN!

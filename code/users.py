@@ -14,7 +14,7 @@ class User:
         self.user_ID = user_ID
         self.team=team
         self.username = username
-        self.game_score = 10
+        self.game_score = 0
         self.has_hit_base = False
 
     # String representation of User object

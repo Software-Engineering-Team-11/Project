@@ -22,7 +22,7 @@ build_ui_instance: pygubu.Builder = pygubu.Builder()
 # --------------------------------
 def createSockets() -> None:
     if networking.setupSockets():
-        print("Sockets setup successful.")
+        print("\nSockets setup successful.\n")
     else:
         print("Failed to set up sockets.")
     
@@ -139,7 +139,7 @@ def builder(root:tk.Tk, users :dict) -> None:
     for i in range(1, 16):
         for field in fields:
             input_ids[builder.get_object(f"{field}{i}", red_frame if "red" in field else blue_frame).winfo_id()] = f"{field}{i}"
-    print(input_ids)
+    # print(input_ids)
 
     #  Place focus on the first entry field
     # builder.get_object("blue_equipment_id_1", blue_frame).focus_set()
@@ -241,7 +241,7 @@ def validate_equipment_ids(input_ids: Dict[int, str]) -> bool:
 # --------------------------------
 def autofill_username(entry, users, team):
    entry_name = entry.winfo_name()
-   print(entry)
+#    print(entry)
    if "_user_id_" in entry_name:  # Check if the input ID corresponds to user ID
         user_id = entry.get().strip()
    else:
@@ -269,16 +269,20 @@ def autofill_username(entry, users, team):
                # Check if response contains data and retrieve username
                if response and response.data:
                    username = response.data[0]["username"]
-                   print("Retrieved username:", username)  # Debugging statement
+
+                   # Debugging statement
+                #    print("Retrieved username:", username)
+
                    username_entry.delete(0, tk.END)  # Clear existing content
                    username_entry.insert(0, username)
-                   print("Username autofilled to widget number:", username_entry.winfo_id())  # Print widget number
-                   print("User team attribute:", "red" if "red" in parent_frame.winfo_name() else "blue")  # Print team attribute
-                   print("User's team set to:", team)
 
-                   # Update the team attribute of the corresponding user
-                   #users[user_id]["team"] = team
-                #    update_user_team(user_id, team)
+                #    ----------------
+                #    PRINT STATEMENTS FOR DEBUGGING
+                #    ----------------
+                #    print("Username autofilled to widget number:", username_entry.winfo_id())  # Print widget number
+                #    print("User team attribute:", "red" if "red" in parent_frame.winfo_name() else "blue")  # Print team attribute
+                #    print("User's team set to:", team)
+
 
                else:
                    print("No username data found in response.")  # Debugging statement
@@ -286,3 +290,4 @@ def autofill_username(entry, users, team):
                print("Username entry widget not found.")
        except Exception as e:
            print(f"An error occurred: {e}")
+ 

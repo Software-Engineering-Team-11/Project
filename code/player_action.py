@@ -6,7 +6,7 @@ import random
 import threading
 
 from networking import Networking
-# from behind_the_scenes import theGame
+from behind_the_scenes import theGame
 # from main import destroy_root
 import userinterface
 
@@ -16,7 +16,7 @@ if os.name == "nt":
 else:
     import playsound
 
-def update_timer(timer_tag: tk.Label, seconds: int, root: tk.Tk, main_frame: tk.Frame, users: Dict, network: Networking) -> None:
+def update_timer(timer_tag: tk.Label, seconds: int, root: tk.Tk, main_frame: tk.Frame, users: Dict, network: Networking,game:theGame) -> None:
     # Update text being displayed in timer label
     mins, secs = divmod(seconds, 60)
     timer_tag.config(text=f"Time Remaining: {mins:01d}:{secs:02d}")
@@ -24,20 +24,25 @@ def update_timer(timer_tag: tk.Label, seconds: int, root: tk.Tk, main_frame: tk.
     # Continue counting down, destroy main frame when timer reaches 0
     if seconds > 0:
         seconds -= 1
-        timer_tag.after(1000, update_timer, timer_tag, seconds, root, main_frame, users, network)
+        timer_tag.after(1000, update_timer, timer_tag, seconds, root, main_frame, users, network,game)
     else:
         main_frame.destroy()
 
-def update_score(users:Dict,main_frame: tk.Frame, builder: pygubu.Builder) -> None:
-    count_blue: int = 1
-    count_red: int = 1
-    for user_person in users:
-        if user_person[2] == "blue":
-            builder.get_object(f"{user_person[2]}_username_{count_blue}", main_frame).config(text=user_person[1])
-            count_blue+=1
-        if user_person[2] == "red":
-            builder.get_object(f"{user_person[2]}_username_{count_red}", main_frame).config(text=user_person[1])
-            count_red+=1
+def update_score(game: theGame,main_frame: tk.Frame, builder: pygubu.Builder,users:Dict) -> None:
+    # Handle blue users
+    for user in game.blue_users:
+        builder.get_object(f"blue_username_{user.rownum}", main_frame).config(text=user.username)
+        builder.get_object(f"blue_score_{user.rownum}", main_frame).config(text=user.game_score)
+    builder.get_object("blue_total_score", main_frame).config(text=game.blue_team_score)
+
+    # Handle red users
+    for user in game.red_users:
+        builder.get_object(f"red_username_{user.rownum}", main_frame).config(text=user.username)
+        builder.get_object(f"red_score_{user.rownum}", main_frame).config(text=user.game_score)
+    builder.get_object("red_total_score", main_frame).config(text=game.red_team_score)
+
+    # Call every 1 second to keep updating scores and keep track of that
+    main_frame.after(1000, update_score, game, main_frame, builder,users)
 
 def build(network: Networking, users: Dict, root: tk.Tk) -> None:
     builder: pygubu.Builder = pygubu.Builder()
@@ -76,7 +81,7 @@ def build(network: Networking, users: Dict, root: tk.Tk) -> None:
     action_stream.pack_propagate(False)
 
     # Create game :
-    # game: GameState = GameState(users)
+    game: theGame = theGame(users)
 
-    update_score(users,main_frame, builder)
-    update_timer(timer_tag, 360, root, main_frame, users, network)
+    update_score(game,main_frame, builder,users)
+    update_timer(timer_tag, 360, root, main_frame, users, network,game)

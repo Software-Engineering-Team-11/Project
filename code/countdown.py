@@ -21,8 +21,7 @@ def update_timer(timer_label: tk.Label, seconds: int, main_frame: tk.Frame, netw
     # Update text being displayed in timer label
     timer_label.config(text=f"Game Starts In: {seconds} Seconds")
 
-    # If there is still time left, recursively call this function after 1 second
-    # Otherwise, destroy countdown frame and start game
+    # DESTROY if timer is 0, time is over
     if seconds > 0:
         seconds -= 1
         timer_label.after(1000, update_timer, timer_label, seconds, main_frame, network, users, root)
@@ -38,7 +37,8 @@ def update_timer(timer_label: tk.Label, seconds: int, main_frame: tk.Frame, netw
 # UPDATE VIDEO FUNCTION!
 # --------------------------------
 def update_video(video_label: tk.Label, cap: cv2.VideoCapture, frame_rate: int, video_width: int, video_height: int) -> None:
-    # Read the next frame from the video, resize it, and convert it to PhotoImage for placing in the label
+    # HANDLE the next frame from the video, resize it, and convert it to PhotoImage for placing in the label so it looks like
+    # A video
     # Recursively call this function after 1 / frame_rate seconds
     ret, frame = cap.read()
     if ret:
@@ -83,19 +83,17 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
 
     # For each user entry, fill in username for each team
     print("Users inside the game:")
-    print(users)
-    count_blue: int = 1
-    count_red: int = 1
-    for user_person in users:
-        # print("USERPERSON TEAM!!!!!!!",user_person[2])
-        # print("USERPERSON username!!!!!!!",user_person[1])
-        # for user in users[team]:
-        if user_person[2] == "blue":
-            builder.get_object(f"{user_person[2]}_username_{count_blue}", main_frame).config(text=user_person[1])
-            count_blue+=1
-        if user_person[2] == "red":
-            builder.get_object(f"{user_person[2]}_username_{count_red}", main_frame).config(text=user_person[1])
-            count_red+=1
+    
+    for color_teams, users_in in users.items():
+        print(f"\nUsers with color: {color_teams}")
+        for user in users_in:
+            print(f"Username {user.username}")
+
+    for team in users:
+        count: int = 1
+        for user in users[team]:
+            builder.get_object(f"{team}_username_{count}", main_frame).config(text=user.username)
+            count += 1
 
     # Get the time frame and label from the UI file
     countdown_frame: tk.Frame = builder.get_object("countdown_frame", main_frame)
@@ -114,7 +112,8 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     frame_rate: int = int(cap.get(cv2.CAP_PROP_FPS))
     video_width: int = 500
     video_height: int = 500
-    seconds: int = 30
+    # DEFAULT TO 30!
+    seconds: int = 2
 
 # --------------------------------
 # START THE COUNTDOWN!

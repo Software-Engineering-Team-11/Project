@@ -3,6 +3,7 @@ import pygubu
 from tkinter import messagebox
 from typing import Dict, List
 import countdown
+from users import User
 from networking import Networking
 from supabase_manager import supabase, print_database_content, insert_user
 
@@ -30,8 +31,10 @@ def createSockets() -> None:
 # --------------------------------
 # WHEN CONTINUE IS CLICKED!
 # --------------------------------
-def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
+def on_continue_clicked(root: tk.Tk, users:Dict, input_ids) -> None:
     
+    users = {"red": [], "blue": []}
+
     if validate_equipment_ids(input_ids):
         print("Checked")
     else:
@@ -48,16 +51,25 @@ def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
     
     # Iterate over input IDs to retrieve user information
     for input_id, field_name in input_ids.items():
-       if "_user_id_" in input_id:  # Check if the input ID corresponds to user ID
-           entry = build_ui_instance.get_object(input_id)
-           username_field = input_id.replace("user_id", "username")  # Get corresponding username field ID
-           username_entry = build_ui_instance.get_object(username_field)
-           user_id = entry.get().strip()
-           username = username_entry.get().strip()
-           if user_id and username:  # Only append if both user ID and username are not empty
-               # Determine the team based on the input ID
-               team = "red" if "red" in input_id else "blue"
-               user_data.append((user_id, username, team))
+        if "_user_id_" in input_id:  # Check if the input ID corresponds to user ID
+            entry = build_ui_instance.get_object(input_id)
+            username_field = input_id.replace("user_id", "username")  # Get corresponding username field ID
+            username_entry = build_ui_instance.get_object(username_field)
+            user_id = entry.get().strip()
+            username = username_entry.get().strip()
+            
+            equipment_entry = build_ui_instance.get_object(input_id.replace("user_id_", "equipment_id_"))  # Get corresponding equipment field ID
+            equipment_id = equipment_entry.get().strip()  # Get equipment ID
+        
+            if user_id and username:  # Only append if both user ID and username are not empty
+                # Determine the team based on the input ID
+                    team = "red" if "red" in input_id else "blue"
+                    user_data.append((user_id, username, team))
+                    row_num = entry.split("_")[-1] if isinstance(entry, str) else entry.winfo_name().split("_")[-1]
+                    users[str(team)].append(User(int(row_num),int(equipment_id),int(user_id),str(username),str(team)))
+               
+               
+               
 
 
    # Insert user data into Supabase table
@@ -89,7 +101,7 @@ def on_continue_clicked(root: tk.Tk, users, input_ids) -> None:
     messagebox.showinfo("Success", "User information inserted successfully.")
    
     # Countdown screen built
-    countdown.build(root, user_data, networking)
+    countdown.build(root, users, networking)
 
     
 

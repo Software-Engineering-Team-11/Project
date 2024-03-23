@@ -85,7 +85,7 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     print("Users inside the game:")
     
     for color_teams, users_in in users.items():
-        print(f"\nUsers with color: {color_teams}")
+        print(f"\nUsers in team: {color_teams}")
         for user in users_in:
             print(f"Username {user.username}")
 
@@ -113,7 +113,7 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     video_width: int = 500
     video_height: int = 500
     # DEFAULT TO 30!
-    seconds: int = 2
+    seconds: int = 5
 
 # --------------------------------
 # START THE COUNTDOWN!

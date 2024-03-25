@@ -64,7 +64,7 @@ After using this command, the player entry screen will pop up. Fill in the user 
 
 ## TO RUN TEST SOFTWARE
 
-*** Warning this step requires you to have an understanding of network transmisions and not be blocking UDP transmitions on the port used ***
+** Warning this step requires you to have an understanding of network transmisions and not be blocking UDP transmitions on the port used **
 
 Within the Tester folder you will find a program called testclient.py this program allows you to listen to the signals sent by the server client.
 

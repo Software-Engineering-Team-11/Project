@@ -14,7 +14,7 @@ cd Project
 
 ## NEEDED DOWNLOADS
 
-*** Ensure all previous versions of the following are uninstalled if you have installed them for prior projects. ***S
+*** Ensure all previous versions of the following are uninstalled if you have installed them for prior projects. ***
 
 In order for this project to run you will need to download the following:
 
@@ -75,7 +75,7 @@ python3 tester\testClient.py
 To run the project for windows users:
 ```
 python tester\testClient.py
-
+```
 ## TEAM MEMBERS
 ```
 Cali Brewer - crb054 

@@ -5,12 +5,16 @@ import splashscreen
 import userinterface
 from users import User
 import supabase_manager
-from supabase_manager import supabase,create_client
+
+from supabase_manager import supabase,create_client, insert_user, print_database_content
+from networking import Networking
 
 # Create the Supabase client
 supabase_client = supabase_manager.supabase
 
-
+# --------------------------------
+# BUILD ROOT OF SCREEN!
+# --------------------------------
 def build_root() -> tk.Tk:
     # Build main window, set title, make fullscreen
     root: tk.Tk = tk.Tk()
@@ -20,17 +24,19 @@ def build_root() -> tk.Tk:
     # If platform is not Linux, set to zoomed and include icon
     if os.name != "posix":
         root.state("zoomed")
-        #Load logo! change to ico extension
-        root.iconbitmap("../images/logo.jpg") 
+        # Load logo! change to ico extension
+        try:
+            root.iconbitmap("assets/logo.jpg")     
+        except:
+            root.iconbitmap("../assets/logo.jpg")
 
-
-    # Force window to fill screen, place at top left
+            # Force window to fill screen, place at top left
     width: int = root.winfo_screenwidth()
     height: int = root.winfo_screenheight()
     root.geometry(f"{width}x{height}+0+0")
 
     # Disable resizing
-    # User will have to play full screen 
+    # User will have to play full screen
     root.resizable(False, False)
     return root
 
@@ -41,10 +47,11 @@ def build_root() -> tk.Tk:
 # build the root of the screen
 root: tk.Tk = build_root()
 
+userinterface.createSockets()
+
 # build the splash screen that dissapears in 3 seconds
 splash: splashscreen = splashscreen.build(root)
 root.after(3000, splash.destroy)
-
-root.after(3000, userinterface.builder, root, User)
+root.after(3000, userinterface.build_ui, root, User)
 
 root.mainloop()

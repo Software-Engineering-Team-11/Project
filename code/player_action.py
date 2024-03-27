@@ -5,6 +5,7 @@ import os
 import random
 import threading
 
+from behind_the_scenes import theGame
 from networking import Networking
 from behind_the_scenes import theGame
 # from main import destroy_root
@@ -85,3 +86,14 @@ def build(network: Networking, users: Dict, root: tk.Tk) -> None:
 
     update_score(game,main_frame, builder,users)
     update_timer(timer_tag, 360, root, main_frame, users, network,game)
+
+# Update stream Method
+def update_action(game: theGame, action: tk.Frame) -> None:
+    # add in scroll effect
+    if len(game.game_event_actions) > 0:
+        event: str = game.game_event_actions.pop()
+        user_name: str =event.split("hit", 1)[0].strip()
+
+        # create label
+        event_label: tk.Label = tk.Label(action, text = event, font =("Lucida Console)", 16), bg="#0000FF") #CHECK IF COLOR IS GOOD
+        event_label.pack(side = tk.TOP, fill = tk.X)

@@ -45,6 +45,17 @@ def update_score(game: theGame,main_frame: tk.Frame, builder: pygubu.Builder,use
     # Call every 1 second to keep updating scores and keep track of that
     main_frame.after(1000, update_score, game, main_frame, builder,users)
 
+# Update stream Method
+def update_action(game: theGame, action: tk.Frame) -> None:
+    # add in scroll effect
+    if len(game.game_event_actions) > 0:
+        event: str = game.game_event_actions.pop()
+        user_name: str =event.split("hit", 1)[0].strip()
+
+        # create label
+        event_label: tk.Label = tk.Label(action, text = event, font =("Lucida Console)", 16), bg="#0000FF") #CHECK IF COLOR IS GOOD
+        event_label.pack(side = tk.TOP, fill = tk.X)
+
 def build(network: Networking, users: Dict, root: tk.Tk) -> None:
     builder: pygubu.Builder = pygubu.Builder()
     try:
@@ -87,13 +98,3 @@ def build(network: Networking, users: Dict, root: tk.Tk) -> None:
     update_score(game,main_frame, builder,users)
     update_timer(timer_tag, 360, root, main_frame, users, network,game)
 
-# Update stream Method
-def update_action(game: theGame, action: tk.Frame) -> None:
-    # add in scroll effect
-    if len(game.game_event_actions) > 0:
-        event: str = game.game_event_actions.pop()
-        user_name: str =event.split("hit", 1)[0].strip()
-
-        # create label
-        event_label: tk.Label = tk.Label(action, text = event, font =("Lucida Console)", 16), bg="#0000FF") #CHECK IF COLOR IS GOOD
-        event_label.pack(side = tk.TOP, fill = tk.X)

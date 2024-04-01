@@ -56,6 +56,23 @@ def update_action(game: theGame, action: tk.Frame) -> None:
         event_label: tk.Label = tk.Label(action, text = event, font =("Lucida Console)", 16), bg="#0000FF") #CHECK IF COLOR IS GOOD
         event_label.pack(side = tk.TOP, fill = tk.X)
 
+        # Add B
+        if "hit blue base" in event:
+            for user in game.blue_users:
+                if user.username == user_name and "B: " not in user.username:
+                    user.username = "B: " + user.username
+        elif "hit red base" in event:
+            for user in game.red_users:
+                if user.username == user_name and "B: " not in user.username:
+                    user.username = "B: " + user.username
+
+        # remove last event
+        if len(action.winfo_children()) > 10:
+            action.winfo_children()[0].destroy()
+
+        # recursive call
+        action.after(1000, update_action, game, action)
+
 def build(network: Networking, users: Dict, root: tk.Tk) -> None:
     builder: pygubu.Builder = pygubu.Builder()
     try:

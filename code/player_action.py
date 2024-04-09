@@ -47,31 +47,33 @@ def update_score(game: theGame,main_frame: tk.Frame, builder: pygubu.Builder,use
 
 # Update stream Method
 def update_action(game: theGame, action: tk.Frame) -> None:
-    # add in scroll effect
+    # Add scroll effect to action stream with game.game_event_list queue
     if len(game.game_event_actions) > 0:
+        # Get the last event from the queue along with player name
         event: str = game.game_event_actions.pop()
-        user_name: str =event.split("hit", 1)[0].strip()
+        player_name: str = event.split("hit", 1)[0].strip()
 
-        # create label
-        event_label: tk.Label = tk.Label(action, text = event, font =("Lucida Console)", 16), bg="#0000FF") #CHECK IF COLOR IS GOOD
-        event_label.pack(side = tk.TOP, fill = tk.X)
+        # Create label for event and add to action stream
+        event_label: tk.Label = tk.Label(action, text=event, font=("Fixedsys", 16), bg="#FFFFFF")
+        event_label.pack(side=tk.TOP, fill=tk.X)
 
-        # Add B
+        # Add B to player name if they hit a base
         if "hit blue base" in event:
-            for user in game.blue_users:
-                if user.username == user_name and "B: " not in user.username:
+            for user in game.red_users:
+                if user.username == player_name and "B: " not in user.username:
                     user.username = "B: " + user.username
         elif "hit red base" in event:
-            for user in game.red_users:
-                if user.username == user_name and "B: " not in user.username:
+            for user in game.blue_users:
+                if user.username == player_name and "B: " not in user.username:
                     user.username = "B: " + user.username
-
-        # remove last event
+        
+        # Remove the last event from the bottom of the action stream FIFO
         if len(action.winfo_children()) > 10:
             action.winfo_children()[0].destroy()
 
-        # recursive call
-        action.after(1000, update_action, game, action)
+    # incrementally update action stream it will update every second
+    action.after(1000, update_action, game, action)
+
 
 def build(network: Networking, users: Dict, root: tk.Tk) -> None:
     builder: pygubu.Builder = pygubu.Builder()
@@ -113,5 +115,14 @@ def build(network: Networking, users: Dict, root: tk.Tk) -> None:
     game: theGame = theGame(users)
 
     update_score(game,main_frame, builder,users)
-    update_timer(timer_tag, 360, root, main_frame, users, network,game)
+
+    # start at 6:20 to match with audio
+    update_timer(timer_tag, 380, root, main_frame, users, network,game)
+
+    # 
+    update_action(game,action_stream)
+
+    game_thread: threading.Thread = threading.Thread(target=network.run_game, args=(game,), daemon=True)
+    game_thread.start()
+    print("Networking sockets setup:", network.setupSockets())
 

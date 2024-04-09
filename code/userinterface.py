@@ -31,7 +31,7 @@ def createSockets() -> None:
 # --------------------------------
 # WHEN CONTINUE IS CLICKED!
 # --------------------------------
-def on_continue_clicked(root: tk.Tk, users:Dict, input_ids) -> None:
+def on_continue_clicked(root: tk.Tk, users:Dict, input_ids, network:Networking) -> None:
     
     users = {"red": [], "blue": []}
 
@@ -41,13 +41,12 @@ def on_continue_clicked(root: tk.Tk, users:Dict, input_ids) -> None:
         return
     user_data:dict = []
     
-    for input_id, field_name in input_ids.items():
-        if "_equipment_id_" in input_id:
-            entry = build_ui_instance.get_object(input_id)
-            equipment_id = entry.get().strip()
-            if(len(equipment_id) != 0):
-                networking.transmit_equipment_code(equipment_id)
-                print("Transmited EquipmentID #{id}" ,equipment_id)
+    # for team in users:
+    #     for user in users[team]:
+    #         print("HELOOOOOOOOOOOOOOOOOOOOOO")
+    #         print(user)
+    #         print(user[team])
+    #         network.transmit_equipment_code(user.equipment_ID)
     
     # Iterate over input IDs to retrieve user information
     for input_id, field_name in input_ids.items():
@@ -69,7 +68,11 @@ def on_continue_clicked(root: tk.Tk, users:Dict, input_ids) -> None:
                     users[str(team)].append(User(int(row_num),int(equipment_id),int(user_id),str(username),str(team)))
                
                
-               
+    for team in users:
+        print(team)
+        for user in users[team]:
+            print(user.user_ID)
+            network.transmit_equipment_code(user.equipment_ID)
 
 
    # Insert user data into Supabase table
@@ -208,7 +211,7 @@ def build_ui(root: tk.Tk, users: dict) -> None:
 
     root.bind("<KeyPress-F5>", lambda event: on_continue_clicked(root, users, input_ids))
     submit_button = build_ui_instance.get_object("submit")
-    submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids))
+    submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids,networking))
 
     # Clear entry fields
     root.bind("<F12>", lambda event: clear_entry_fields(build_ui_instance))

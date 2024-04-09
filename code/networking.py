@@ -12,7 +12,7 @@ BUFFER: int = 1024
 GAME_TIME: int = 360
 IP: str = "127.0.0.1"
 SEND_ADDRESS = ("127.0.0.1", 7500)
-RECEIEVE_ADDRESS = ("127.0.0.1", 7500)
+RECEIEVE_ADDRESS = ("127.0.0.1", 7501)
 SERVER_ADDRESS: str = "0.0.0.0"
 SERVER_PORT: int = 7500
 SERVER_RECEIVE_PORT: int = 7501
@@ -35,14 +35,9 @@ class Networking:
             print(e)
             return False
         
-    def sendData(self, data: bytes, destination: tuple) -> None:
+    def sendData(self, data: str) -> None:
         # Send data over the transmit socket
-        self.transmitSocket.sendto(data, destination)
-
-    def receiveData(self) -> bytes:
-        # Receive data from the receive socket
-        data, address = self.receiveSocket.recvfrom(BUFFER)
-        return data, address
+        self.transmitSocket.sendto(str.encode(str(data)), (SEND_ADDRESS))
     
     def transmit_equipment_code(self, equipment_code: str) -> bool:
         # Enable broadcasts at the syscall level and priviledged process
@@ -57,9 +52,27 @@ class Networking:
     def transmit_start_game_code(self) -> bool:
     # Transmit start game code to the broadcast address
         try:
-            self.transmitSocket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            self.transmitSocket.sendto(str.encode(str(START_GAME)), (IP, SERVER_RECEIVE_PORT))
+            self.transmitSocket.sendto(str.encode(str(START_GAME)), (SEND_ADDRESS)) #Send start code to output port
             return True
         except Exception as e:
             print(e)
             return False
+        
+    def listener(self) -> str:
+        try:
+                #self.transmitSocket.setblocking(False)
+            self.receiveSocket.setblocking(False)
+            try:
+                msg, _ = self.receiveSocket.recvfrom(1024)
+                output = msg.decode('utf-8')
+                #print(output)
+                #msg = msg.decode('utf-8')
+                return output
+            except socket.error:
+                #print("Networking error unable to decode")
+                return "empty"
+        except:
+            print("Warning socket setup possible error")
+            return "empty"
+           
+            

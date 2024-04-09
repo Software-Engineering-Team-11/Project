@@ -53,5 +53,4 @@ userinterface.createSockets()
 splash: splashscreen = splashscreen.build(root)
 root.after(3000, splash.destroy)
 root.after(3000, userinterface.build_ui, root, User)
-
 root.mainloop()

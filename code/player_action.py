@@ -20,15 +20,36 @@ def update_timer(timer_tag: tk.Label, seconds: int, root: tk.Tk, main_frame: tk.
     # Update text being displayed in timer label
     mins, secs = divmod(seconds, 60)
     timer_tag.config(text=f"Time Remaining: {mins:01d}:{secs:02d}")
-
+    
     # Continue counting down, destroy main frame when timer reaches 0
     if seconds > 0:
         seconds -= 1
         timer_tag.after(1000, update_timer, timer_tag, seconds, root, main_frame, users, network,game)
     else:
         main_frame.destroy()
+        
+def udpDecoder() -> None:
+    out = "empty"
+    out = userinterface.passlistener()
+    decoded = []
+    decoded = out.split(':')
+    #print(decoded)
+    if(out != "empty"):
+        #print("msg true and out ! empty")
+        if(decoded[1] == "53" or decoded[1] == "43"):
+            print("base hit")
+            return
+        else:
+            #print("decoding")
+            #print(decoded)
+            playerWhoShot = decoded[0]
+            playerHit = decoded[1]
+            print("Player #" + playerWhoShot + " Hit Player #" + playerHit)
+            userinterface.transmit(playerHit)
 
 def update_score(game: theGame,main_frame: tk.Frame, builder: pygubu.Builder,users:Dict) -> None:
+    udpDecoder()
+    
     # Handle blue users
     for user in game.blue_users:
         builder.get_object(f"blue_username_{user.rownum}", main_frame).config(text=user.username)

@@ -26,7 +26,12 @@ def createSockets() -> None:
     else:
         print("Failed to set up sockets.")
     
+def passlistener() -> str:
+    update = networking.listener()
+    return update
 
+def transmit(input) -> None:
+    networking.sendData(input)
 
 # --------------------------------
 # WHEN CONTINUE IS CLICKED!
@@ -67,6 +72,11 @@ def on_continue_clicked(root: tk.Tk, users:Dict, input_ids) -> None:
                     user_data.append((user_id, username, team))
                     row_num = entry.split("_")[-1] if isinstance(entry, str) else entry.winfo_name().split("_")[-1]
                     users[str(team)].append(User(int(row_num),int(equipment_id),int(user_id),str(username),str(team)))
+                    
+       # try:
+        #    print(networking.listener())
+       # except:
+        #    print("no message debug")
                
                
                

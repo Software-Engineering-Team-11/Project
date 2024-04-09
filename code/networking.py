@@ -94,7 +94,6 @@ class Networking:
         except Exception as e:
             print(e)
             return False
-    
 
     def run_game(self, current_game_state: theGame) -> None:
     # While the game is still running, receive data from the receive socket

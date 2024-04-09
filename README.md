@@ -30,24 +30,24 @@ sudo apt install Python-
 
 Non-windows users install these packages:
 ```
--pip install python-dotenv
--pip install tk
--pip install supabase-py
--pip install supabase
--pip install pygubu
--pip install pillow
--pip install opencv-python
--pip install pil.imagetk
--pip install playsound
+pip install python-dotenv
+pip install tk
+pip install supabase-py
+pip install supabase
+pip install pygubu
+pip install pillow
+pip install opencv-python
+pip install pil.imagetk
+pip install playsound
 ```
 Windows users install these packages:
 ```
--pip install python-dotenv
--pip install tk
--pip install supabase-py
--pip install pygubu
--pip install pillow
--pip install opencv-python
+pip install python-dotenv
+pip install tk
+pip install supabase-py
+pip install pygubu
+pip install pillow
+pip install opencv-python
 ```
 ## TO RUN TEST SOFTWARE
 

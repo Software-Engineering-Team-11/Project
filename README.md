@@ -65,6 +65,11 @@ After running this command, you'll be prompted to enter four equipment IDs. We r
 ## Run the Game Software
 After running the test software open another terminal to run the main code.
 
+First make sure to go into the project
+```
+cd Project
+```
+
 For non-Windows users, use:
 ```
 python3 code\main.py

@@ -54,11 +54,11 @@ To start, open two different terminals; you'll need both. One will run the traff
 
 For non-Windows users, use:
 ```
-python3 code/TrafficGenerator.py
+python3 code/trafficgenerator.py
 ```
 For Windows users, use:
 ```
-python code/TrafficGenerator.py
+python code/trafficgenerator.py
 ```
 After running this command, you'll be prompted to enter four equipment IDs. We recommend using IDs 1, 2, 3, and 4. You can use different IDs, but they all must be unique and cannot be duplicated. Once you've entered the IDs, you'll see a message that says "Waiting for start from game_software." When you see this, switch to your second terminal.
 

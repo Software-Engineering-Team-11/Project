@@ -11,7 +11,7 @@ After you have cloned the repository open the project in the terminal
 ```
 cd Project
 ```
-***If you have already downloaded the project and need to delete the folder and redownload it***
+***If you have already downloaded the project please delete the folder and redownload it***
 
 ## NEEDED DOWNLOADS
 

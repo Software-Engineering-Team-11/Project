@@ -32,7 +32,7 @@ class Networking:
             self.transmitSocket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.receiveSocket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.receiveSocket.bind((SERVER_ADDRESS, SERVER_RECEIVE_PORT))
-            # self.transmitSocket.bind((SERVER_ADDRESS, SERVER_PORT))
+            self.transmitSocket.bind((SERVER_ADDRESS, SERVER_TRANSMIT_PORT))
             return True
         except Exception as e:
             print(e)

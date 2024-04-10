@@ -54,7 +54,7 @@ To start, open two different terminals; you'll need both. One will run the traff
 
 For non-Windows users, use:
 ```
-pythons3 code/TrafficGenerator.py
+python3 code/TrafficGenerator.py
 ```
 For Windows users, use:
 ```

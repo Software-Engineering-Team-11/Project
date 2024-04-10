@@ -29,14 +29,33 @@ class Networking:
 
     def setupSockets(self) -> bool:
         try:
+            # Set SO_REUSEADDR option
             self.transmitSocket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.transmitSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
             self.receiveSocket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.receiveSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+            # Bind the receive socket to the specified address and port
             self.receiveSocket.bind((SERVER_ADDRESS, SERVER_RECEIVE_PORT))
+            
+            # Bind the transmit socket to the specified address and port
             self.transmitSocket.bind((SERVER_ADDRESS, SERVER_TRANSMIT_PORT))
+            
             return True
         except Exception as e:
             print(e)
             return False
+        # try:
+        #     self.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        #     self.transmitSocket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        #     self.receiveSocket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        #     self.receiveSocket.bind((SERVER_ADDRESS, SERVER_RECEIVE_PORT))
+        #     self.transmitSocket.bind((SERVER_ADDRESS, SERVER_TRANSMIT_PORT))
+        #     return True
+        # except Exception as e:
+        #     print(e)
+        #     return False
     
     def close_sockets(self) -> bool:
         # Close transmit and receive sockets

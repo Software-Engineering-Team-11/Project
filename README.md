@@ -15,7 +15,7 @@ cd Project
 
 ## NEEDED DOWNLOADS
 
-*** Ensure all previous versions of the following are uninstalled if you have installed them for prior projects. ***
+***Ensure all previous versions of the following are uninstalled if you have installed them for prior projects***
 
 In order for this project to run you will need to download the following:
 

@@ -17,7 +17,10 @@ red2 = input('Enter equipment id of red player 2 ==> ')
 
 # Create datagram sockets
 UDPServerSocketReceive = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+UDPServerSocketReceive.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
 UDPClientSocketTransmit = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+UDPClientSocketTransmit.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 # Bind the server socket
 UDPServerSocketReceive.bind(clientAddressPort)

@@ -153,8 +153,11 @@ class Networking:
                             print("Invalid codes: Left Code is " + str(left_code) + " Right Code is " + str(right_code))
                     else:
                         print("Invalid message format:", decoded_message)
-
             
             except Exception as e:
                 continue
                 # End of networking
+        
+        self.transmit_end_game_code()
+        self.transmit_end_game_code()
+        self.transmit_end_game_code()

@@ -38,7 +38,10 @@ def destroy_current_game(root: tk.Tk, main_frame: tk.Frame, users: dict, network
     if os.name == "nt":
         winsound.PlaySound(None, winsound.SND_ASYNC)
     else:
-        playsound.playsound(None, block=False)
+        try:
+            playsound.playsound("assets/1s.mp3", block=False)
+        except:
+            playsound.playsound("../assets/1s.mp3", block=False)
 
     # Winning team display
     winner: str

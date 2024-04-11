@@ -98,29 +98,33 @@ def update_score(game, main_frame, builder, users, root):
         builder.get_object(f"red_username_{user.rownum}", main_frame).config(text=user.username)
         builder.get_object(f"red_score_{user.rownum}", main_frame).config(text=user.game_score)
 
-    # Get the player with the highest score
-    all_users = game.blue_users + game.red_users
-    highest_score_user = max(all_users, key=lambda user: user.game_score)
-
-    # Get the label corresponding to the highest score user
-    highest_score_label = builder.get_object(f"{highest_score_user.team}_score_{highest_score_user.rownum}", main_frame)
-
     # Stop flashing the previous flashing label
     if flashing_label:
         flashing_label.config(fg=flashing_label.team_color)
         flashing_label = None
 
-    # Start flashing the highest score label
-    flashing_label = highest_score_label
-    flashing_label.team_color = flashing_label.cget("fg")
+    # Update team total scores
+    blue_total_score_label = builder.get_object("blue_total_score", main_frame)
+    red_total_score_label = builder.get_object("red_total_score", main_frame)
+    blue_total_score_label.config(text=game.blue_team_score)
+    red_total_score_label.config(text=game.red_team_score)
 
-    def flash(color1="black", color2="yellow"):
-        current_color = flashing_label.cget("fg")
-        next_color = color1 if current_color == color2 else color2
-        flashing_label.config(fg=next_color)
-        root.after(600, flash, color1, color2)  # Reduced interval to 100 milliseconds
+    # Determine which team's total score is higher
+    if game.blue_team_score > game.red_team_score:
+        flashing_label = blue_total_score_label
+    elif game.red_team_score > game.blue_team_score:
+        flashing_label = red_total_score_label
 
-    flash()
+    if flashing_label:
+        flashing_label.team_color = flashing_label.cget("fg")
+
+        def flash(color1="black", color2="yellow"):
+            current_color = flashing_label.cget("fg")
+            next_color = color1 if current_color == color2 else color2
+            flashing_label.config(fg=next_color)
+            root.after(600, flash, color1, color2)  # Reduced interval to 100 milliseconds
+
+        flash()
 
     # Call every 1 second to keep updating scores and keep track of that
     main_frame.after(1000, update_score, game, main_frame, builder, users, root)

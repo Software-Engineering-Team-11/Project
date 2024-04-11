@@ -61,7 +61,7 @@ For Windows users, use:
 ```
 python code/trafficgenerator.py
 ```
-After running this command, you'll be prompted to enter four equipment IDs. We recommend using IDs 1, 2, 3, and 4. You can use different IDs, but they all must be unique and cannot be duplicated. Once you've entered the IDs, you'll see a message that says "Waiting for start from game_software." When you see this, switch to your second terminal.
+After running this command, you'll be prompted to enter four equipment IDs. We recommend using IDs 1, 2, 3, and 4. You can use different IDs, but they all must be unique, between the numbers 1 - 30, and cannot be duplicated. Once you've entered the IDs, you'll see a message that says "Waiting for start from game_software." When you see this, switch to your second terminal.
 
 ## Run the Game Software
 After running the test software open another terminal to run the main code.

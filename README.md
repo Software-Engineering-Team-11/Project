@@ -11,10 +11,11 @@ After you have cloned the repository open the project in the terminal
 ```
 cd Project
 ```
+***If you have already downloaded the project please delete the folder and redownload it***
 
 ## NEEDED DOWNLOADS
 
-*** Ensure all previous versions of the following are uninstalled if you have installed them for prior projects. ***
+***Ensure all previous versions of the following are uninstalled if you have installed them for prior projects***
 
 In order for this project to run you will need to download the following:
 
@@ -49,34 +50,37 @@ pip install pygubu
 pip install pillow
 pip install opencv-python
 ```
-## TO RUN TEST SOFTWARE
+## Run Traffic Generator
+To start, open two different terminals; you'll need both. One will run the traffic generator, and the other will run the main code.
 
-** Warning this step requires you to have an understanding of network transmisions and not be blocking UDP transmitions on the port used **
-
-Within the Tester folder you will find a program called testclient.py this program allows you to listen to the signals sent by the server client.
-
-To run the project for non-windows users:
+For non-Windows users, use:
 ```
-python3 tester\testClient.py
+python3 code/trafficgenerator.py
 ```
-To run the project for windows users:
+For Windows users, use:
 ```
-python tester\testClient.py
+python code/trafficgenerator.py
+```
+After running this command, you'll be prompted to enter four equipment IDs. We recommend using IDs 1, 2, 3, and 4. You can use different IDs, but they all must be unique and cannot be duplicated. Once you've entered the IDs, you'll see a message that says "Waiting for start from game_software." When you see this, switch to your second terminal.
+
+## Run the Game Software
+After running the test software open another terminal to run the main code.
+
+First make sure to go into the project
+```
+cd Project
 ```
 
-## TO RUN CODE
-After running the test software open another terminal and run the main code.
-
-To run the project for non-windows users:
+For non-Windows users, use:
 ```
 python3 code\main.py
 ```
-To run the project for windows users:
+For Windows users, use:
 ```
 python code\main.py
 ```
 
-After using this command, the player entry screen will pop up. Fill in the user ID field. Once you insert the ID, press the "Enter" key. This action will auto-populate the username if the player is in Supabase. If the user does not exist, they will be added to Supabase for future reference. Next, input the equipment ID and click "Continue" to bring you to the countdown screen.
+After using this command, the player entry screen will pop up. Fill in the equipment id field using the same four ids used for the traffic generator, assigning two to the blue team and two to the red team. Then fill in the user id field, again we reccomened used ids 1, 2, 3, and 4. Once you insert the ID, press the "Enter" key. This action will auto-populate the username if the player is in Supabase. If the user does not exist with that id, input their name in the Username field and they will be added to Supabase for future reference. Next, click "Continue" to bring you to the countdown screen.
 
 
 ## TEAM MEMBERS

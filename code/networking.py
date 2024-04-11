@@ -156,5 +156,5 @@ class Networking:
 
             
             except Exception as e:
-                print("Error receiving data:", e)
+                continue
                 # End of networking

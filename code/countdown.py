@@ -113,7 +113,7 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     video_width: int = 500
     video_height: int = 500
     # DEFAULT TO 30!
-    seconds: int = 5
+    seconds: int = 2
 
 # --------------------------------
 # START THE COUNTDOWN!

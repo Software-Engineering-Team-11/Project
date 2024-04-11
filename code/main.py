@@ -8,9 +8,19 @@ import supabase_manager
 
 from supabase_manager import supabase,create_client, insert_user, print_database_content
 from networking import Networking
+if os.name == "nt":
+    import winsound
+else:
+    import playsound
 
 # Create the Supabase client
 supabase_client = supabase_manager.supabase
+
+# def destroy_root(root: tk.Tk, network: Networking) -> None:
+#     # if os.name == "nt":
+#     #     winsound.PlaySound(None, winsound.SND_ASYNC)
+#     # network.close_sockets()
+#     root.destroy()
 
 # --------------------------------
 # BUILD ROOT OF SCREEN!

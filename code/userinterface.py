@@ -111,44 +111,44 @@ def on_continue_clicked(root: tk.Tk, users:Dict, input_ids, network:Networking) 
 # --------------------------------
 # SCREEN BUILDER WITH ALL THE ATTRIBUTES!
 # --------------------------------
-def builder(root:tk.Tk, users :dict) -> None:
-    builder: pygubu.Builder = pygubu.Builder()
-    try:
-        builder.add_from_file("ui/player_interface.ui")
-    except:
-        builder.add_from_file("../ui/player_interface.ui")
-    # Place the main frame in the center of the root window
-    # make unresizable
-    main_frame: tk.Frame = builder.get_object("master", root)
-    main_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+# def builder(root:tk.Tk, users :dict) -> None:
+#     builder: pygubu.Builder = pygubu.Builder()
+#     try:
+#         builder.add_from_file("ui/player_interface.ui")
+#     except:
+#         builder.add_from_file("../ui/player_interface.ui")
+#     # Place the main frame in the center of the root window
+#     # make unresizable
+#     main_frame: tk.Frame = builder.get_object("master", root)
+#     main_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
-    # Create frames for the teams
-    teams_frame: tk.Frame = builder.get_object("teams", main_frame)
-    red_frame: tk.Frame = builder.get_object("red_team", teams_frame)
-    blue_frame: tk.Frame = builder.get_object("blue_team", teams_frame)
+#     # Create frames for the teams
+#     teams_frame: tk.Frame = builder.get_object("teams", main_frame)
+#     red_frame: tk.Frame = builder.get_object("red_team", teams_frame)
+#     blue_frame: tk.Frame = builder.get_object("blue_team", teams_frame)
 
-    # Create a dictionary of  IDs and corresponding entry field IDs
-    input_ids: Dict[int, str] = {}
-    fields: List[str] = {
-        "red_equipment_id_",
-        "red_user_id_",
-        "red_username_",
-        "blue_equipment_id_",
-        "blue_user_id_",
-        "blue_username_"
-    }
+#     # Create a dictionary of  IDs and corresponding entry field IDs
+#     input_ids: Dict[int, str] = {}
+#     fields: List[str] = {
+#         "red_equipment_id_",
+#         "red_user_id_",
+#         "red_username_",
+#         "blue_equipment_id_",
+#         "blue_user_id_",
+#         "blue_username_"
+#     }
 
-    # Add each entry field ID to the dictionary of entry field IDs
-    for i in range(1, 16):
-        for field in fields:
-            input_ids[builder.get_object(f"{field}{i}", red_frame if "red" in field else blue_frame).winfo_id()] = f"{field}{i}"
-    # print(input_ids)
+#     # Add each entry field ID to the dictionary of entry field IDs
+#     for i in range(1, 16):
+#         for field in fields:
+#             input_ids[builder.get_object(f"{field}{i}", red_frame if "red" in field else blue_frame).winfo_id()] = f"{field}{i}"
+#     # print(input_ids)
 
-    #  Place focus on the first entry field
-    # builder.get_object("blue_equipment_id_1", blue_frame).focus_set()
+#     #  Place focus on the first entry field
+#     # builder.get_object("blue_equipment_id_1", blue_frame).focus_set()
 
-    # Testing submit button
-    builder.get_object("submit").configure(command=lambda: on_continue_clicked(root,users,input_ids))
+#     # Testing submit button
+#     builder.get_object("submit").configure(command=lambda: on_continue_clicked(root,users,input_ids))
     
 
 # --------------------------------
@@ -175,13 +175,16 @@ def clear_entry_fields(builder:pygubu.builder):
 # BUILD SCREEN!
 # --------------------------------
 def build_ui(root: tk.Tk, users: dict) -> None:
-    global build_ui_instance  # Make sure to use the global instance
+    global build_ui_instance
+
+    # Destroy the previous UI elements
+    for child in root.winfo_children():
+        child.destroy()
 
     try:
         build_ui_instance.add_from_file("ui/player_interface.ui")
     except:
         build_ui_instance.add_from_file("../ui/player_interface.ui")
-
 
     main_frame: tk.Frame = build_ui_instance.get_object("master", root)
     main_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
@@ -201,11 +204,11 @@ def build_ui(root: tk.Tk, users: dict) -> None:
 
     for i in range(1, 16):
         for field in fields:
-            entry_id = f"{field}{i}"  # Use the ID from XML directly
+            entry_id = f"{field}{i}"
             entry = build_ui_instance.get_object(entry_id,
                                                  red_frame if "red" in field else blue_frame)
-            input_ids[entry_id] = entry_id  # Use the same ID for input_ids
-            team="blue" if "blue" in field else "red"
+            input_ids[entry_id] = entry_id
+            team = "blue" if "blue" in field else "red"
             entry.bind ("<Return>", lambda event, entry=entry, team=team: autofill_username(entry,users,team))
 
 
@@ -213,8 +216,48 @@ def build_ui(root: tk.Tk, users: dict) -> None:
     submit_button = build_ui_instance.get_object("submit")
     submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids,networking))
 
-    # Clear entry fields
     root.bind("<F12>", lambda event: clear_entry_fields(build_ui_instance))
+
+    # global build_ui_instance  # Make sure to use the global instance
+
+    # try:
+    #     build_ui_instance.add_from_file("ui/player_interface.ui")
+    # except:
+    #     build_ui_instance.add_from_file("../ui/player_interface.ui")
+
+
+    # main_frame: tk.Frame = build_ui_instance.get_object("master", root)
+    # main_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+    # red_frame: tk.Frame = build_ui_instance.get_object("red_team", main_frame)
+    # blue_frame: tk.Frame = build_ui_instance.get_object("blue_team", main_frame)
+
+    # input_ids: Dict[int, str] = {}
+    # fields: List[str] = {
+    #     "red_equipment_id_",
+    #     "red_user_id_",
+    #     "red_username_",
+    #     "blue_equipment_id_",
+    #     "blue_user_id_",
+    #     "blue_username_"
+    # }
+
+    # for i in range(1, 16):
+    #     for field in fields:
+    #         entry_id = f"{field}{i}"  # Use the ID from XML directly
+    #         entry = build_ui_instance.get_object(entry_id,
+    #                                              red_frame if "red" in field else blue_frame)
+    #         input_ids[entry_id] = entry_id  # Use the same ID for input_ids
+    #         team="blue" if "blue" in field else "red"
+    #         entry.bind ("<Return>", lambda event, entry=entry, team=team: autofill_username(entry,users,team))
+
+
+    # root.bind("<KeyPress-F5>", lambda event: on_continue_clicked(root, users, input_ids))
+    # submit_button = build_ui_instance.get_object("submit")
+    # submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids,networking))
+
+    # # Clear entry fields
+    # root.bind("<F12>", lambda event: clear_entry_fields(build_ui_instance))
 
 
 # --------------------------------

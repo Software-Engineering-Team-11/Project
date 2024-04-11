@@ -28,7 +28,10 @@ def build_new_game(root: tk.Tk) -> None:
     root.destroy()
 
     # Run main.py again
-    subprocess.Popen(["python", "code/main.py"])
+    try:
+        subprocess.Popen(["python", "code/main.py"])
+    except:
+        subprocess.Popen(["python3", "code/main.py"])
 
 def destroy_current_game(root: tk.Tk, main_frame: tk.Frame, users: dict, network: Networking, game: theGame) -> None:
     # Destroy the main frame

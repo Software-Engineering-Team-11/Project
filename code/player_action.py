@@ -82,21 +82,49 @@ def update_timer(timer_tag: tk.Label, seconds: int, root: tk.Tk, main_frame: tk.
     else:
         destroy_current_game(root, main_frame, users, network, game)
 
-def update_score(game: theGame,main_frame: tk.Frame, builder: pygubu.Builder,users:Dict) -> None:
+
+flashing_label = None
+
+def update_score(game, main_frame, builder, users, root):
+    global flashing_label
+
     # Handle blue users
     for user in game.blue_users:
         builder.get_object(f"blue_username_{user.rownum}", main_frame).config(text=user.username)
         builder.get_object(f"blue_score_{user.rownum}", main_frame).config(text=user.game_score)
-    builder.get_object("blue_total_score", main_frame).config(text=game.blue_team_score)
 
     # Handle red users
     for user in game.red_users:
         builder.get_object(f"red_username_{user.rownum}", main_frame).config(text=user.username)
         builder.get_object(f"red_score_{user.rownum}", main_frame).config(text=user.game_score)
-    builder.get_object("red_total_score", main_frame).config(text=game.red_team_score)
+
+    # Get the player with the highest score
+    all_users = game.blue_users + game.red_users
+    highest_score_user = max(all_users, key=lambda user: user.game_score)
+
+    # Get the label corresponding to the highest score user
+    highest_score_label = builder.get_object(f"{highest_score_user.team}_score_{highest_score_user.rownum}", main_frame)
+
+    # Stop flashing the previous flashing label
+    if flashing_label:
+        flashing_label.config(fg=flashing_label.team_color)
+        flashing_label = None
+
+    # Start flashing the highest score label
+    flashing_label = highest_score_label
+    flashing_label.team_color = flashing_label.cget("fg")
+
+    def flash(color1="black", color2="yellow"):
+        current_color = flashing_label.cget("fg")
+        next_color = color1 if current_color == color2 else color2
+        flashing_label.config(fg=next_color)
+        root.after(600, flash, color1, color2)  # Reduced interval to 100 milliseconds
+
+    flash()
 
     # Call every 1 second to keep updating scores and keep track of that
-    main_frame.after(1000, update_score, game, main_frame, builder,users)
+    main_frame.after(1000, update_score, game, main_frame, builder, users, root)
+
 
 # Update stream Method
 def update_action(game: theGame, action: tk.Frame) -> None:
@@ -167,10 +195,10 @@ def build(network: Networking, users: Dict, root: tk.Tk) -> None:
     # Create game :
     game: theGame = theGame(users)
 
-    update_score(game,main_frame, builder,users)
+    update_score(game,main_frame, builder,users, root)
 
     # start at 6:20 to match with audio
-    update_timer(timer_tag, 10, root, main_frame, users, network,game)
+    update_timer(timer_tag, 380, root, main_frame, users, network,game)
 
     # 
     update_action(game,action_stream)

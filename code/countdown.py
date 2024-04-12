@@ -104,7 +104,7 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     video_label: tk.Label = tk.Label(video_frame)
     video_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
     try:
-        cap: cv2.VideoCapture = cv2.VideoCapture("/assets/wait.mp4")
+        cap: cv2.VideoCapture = cv2.VideoCapture("assets/wait.mp4")
     except:
         cap: cv2.VideoCapture = cv2.VideoCapture("../assets/wait.mp4")
     

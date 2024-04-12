@@ -119,10 +119,13 @@ def update_score(game, main_frame, builder, users, root):
         flashing_label.team_color = flashing_label.cget("fg")
 
         def flash(color1="black", color2="yellow"):
-            current_color = flashing_label.cget("fg")
-            next_color = color1 if current_color == color2 else color2
-            flashing_label.config(fg=next_color)
-            root.after(600, flash, color1, color2)  # Reduced interval to 100 milliseconds
+            try:
+                current_color = flashing_label.cget("fg")
+                next_color = color1 if current_color == color2 else color2
+                flashing_label.config(fg=next_color)
+                root.after(600, flash, color1, color2)  # Reduced interval to 100 milliseconds
+            except:
+                pass
 
         flash()
 

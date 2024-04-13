@@ -19,15 +19,11 @@ cd Project
 
 For non-windows users:
 1. Open a terminal
-2. Update your package list (reccomened not requried):
-```
-sudo apt update
-```
-3. Install pip for python3 by typing and entering this command:
+2. Install pip for python3 by typing and entering this command:
 ```
 sudo apt install python3-pip
 ```
-4. If pip does not work use:
+3. If pip does not work use:
 ```
 sudo apt install Python-
 ```

@@ -69,3 +69,16 @@ class theGame:
                 user.game_score += points_per_base_hit
                 self.red_team_score += points_per_base_hit
                 self.game_event_actions.append(f"{user.username} hit blue base")
+
+    def sort_players_by_score(self):
+        # Sort blue team players by score in descending order
+        self.blue_users.sort(key=lambda x: x.game_score, reverse=True)
+        print("Blue Team Players after sorting:")
+        for player in self.blue_users:
+            print(f"Player: {player.username}, Score: {player.game_score}")
+    
+        # Sort red team players by score in descending order
+        self.red_users.sort(key=lambda x: x.game_score, reverse=True)
+        print("Red Team Players after sorting:")
+        for player in self.red_users:
+            print(f"Player: {player.username}, Score: {player.game_score}")

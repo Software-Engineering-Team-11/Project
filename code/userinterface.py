@@ -32,13 +32,6 @@ def createSockets() -> None:
 # WHEN CONTINUE IS CLICKED!
 # --------------------------------
 def on_continue_clicked(root: tk.Tk, users:Dict, input_ids, network:Networking) -> None:
-    
-    users = {"red": [], "blue": []}
-
-    if validate_equipment_ids(input_ids):
-        print("Checked")
-    else:
-        return
     user_data:dict = []
     
     # for team in users:
@@ -66,7 +59,15 @@ def on_continue_clicked(root: tk.Tk, users:Dict, input_ids, network:Networking) 
                     user_data.append((user_id, username, team))
                     row_num = entry.split("_")[-1] if isinstance(entry, str) else entry.winfo_name().split("_")[-1]
                     users[str(team)].append(User(int(row_num),int(equipment_id),int(user_id),str(username),str(team)))
-               
+    if validate_teams(users):
+        print("Validated Teams")
+    else:
+        return
+    users = {"red": [], "blue": []}
+    if validate_equipment_ids(input_ids):
+        print("Checked")
+    else:
+        return           
                
     for team in users:
         print(team)
@@ -279,6 +280,24 @@ def validate_equipment_ids(input_ids: Dict[int, str]) -> bool:
                     return False
     return True
 
+# --------------------------------
+# Validate that there are players on both teams. Its not fun to play by yourself!
+# --------------------------------
+
+
+def validate_teams(users:Dict) -> bool:
+    print(users)
+    print("In validate")
+    try:
+        for team in users:
+            print(users[team].len())
+            if users[team].len() > 0:
+                
+                return True
+            else:
+                return False
+    except:
+        return False
 
 
 

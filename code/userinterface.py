@@ -16,7 +16,6 @@ networking = Networking()
 build_ui_instance: pygubu.Builder = pygubu.Builder()
 
 
-
 # --------------------------------
 # CREATE THE SOCKETS!
 # --------------------------------
@@ -32,12 +31,14 @@ def createSockets() -> None:
 # WHEN CONTINUE IS CLICKED!
 # --------------------------------
 def on_continue_clicked(root: tk.Tk, users:Dict, input_ids, network:Networking) -> None:
-    
+    print("\n")
     users = {"red": [], "blue": []}
 
     if validate_equipment_ids(input_ids):
-        print("Checked")
+        print("Equipment IDs Checked")
     else:
+        print("ruh Ro")
+        resetRoot(root, users, input_ids)
         return
     user_data:dict = []
     
@@ -66,15 +67,21 @@ def on_continue_clicked(root: tk.Tk, users:Dict, input_ids, network:Networking) 
                     user_data.append((user_id, username, team))
                     row_num = entry.split("_")[-1] if isinstance(entry, str) else entry.winfo_name().split("_")[-1]
                     users[str(team)].append(User(int(row_num),int(equipment_id),int(user_id),str(username),str(team)))
-               
+
+
                
     for team in users:
-        print(team)
+        #print(team)
         for user in users[team]:
-            print(user.user_ID)
+            #print(user.user_ID)
             network.transmit_equipment_code(user.equipment_ID)
 
 
+
+    if not validate_users(users):
+       messagebox.showerror("Warning", f"Make sure there are players on both teams prior to starting the game.")
+       resetRoot(root, users, input_ids)
+       return
    # Insert user data into Supabase table
     for user_id, username, team in user_data:
        # Convert user_id to int (assuming user_id should be an integer)
@@ -82,6 +89,7 @@ def on_continue_clicked(root: tk.Tk, users:Dict, input_ids, network:Networking) 
            user_id = int(user_id)
         except ValueError:
            messagebox.showerror("Error", "User ID must be a valid number.")
+           resetRoot(root, users, input_ids)
            return
 
 
@@ -211,12 +219,11 @@ def build_ui(root: tk.Tk, users: dict) -> None:
             team = "blue" if "blue" in field else "red"
             entry.bind ("<Return>", lambda event, entry=entry, team=team: autofill_username(entry,users,team))
 
-
-    root.bind("<KeyPress-F5>", lambda event: on_continue_clicked(root, users, input_ids))
     submit_button = build_ui_instance.get_object("submit")
-    submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids,networking))
-
+    root.bind("<KeyPress-F5>", lambda event: on_continue_clicked(root, users, input_ids, networking))
+    submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids, networking))
     root.bind("<F12>", lambda event: clear_entry_fields(build_ui_instance))
+
 
     # global build_ui_instance  # Make sure to use the global instance
 
@@ -272,15 +279,52 @@ def validate_equipment_ids(input_ids: Dict[int, str]) -> bool:
             user_id_entry = build_ui_instance.get_object(user_id_field_name)
             user_id = user_id_entry.get().strip() # get value of user_id
             if user_id:  # is empty check
-                equipment_id = entry.get().strip()
-                if not equipment_id:  # if equipment ID empty return false and show error
+                equipment_id_entry = entry.get().strip()
+                try:
+                    equipment_id = int(equipment_id_entry)
+                except:
+                     messagebox.showerror("Warning", f"The Equipment ID entered for {field_name} is not an number.")
+                     return False
+                if not equipment_id_entry:  # if equipment ID empty return false and show error
                     field_number = field_name.split("_")[-1]
                     messagebox.showerror("Warning", f"Equipment ID for {field_name} cannot be empty.")
                     return False
+                else:
+                    if equipment_id < 0 or equipment_id > 100 or equipment_id == 43 or equipment_id == 53:
+                        messagebox.showerror("Warning", f"The Equipment ID entered for {field_name} is not valid.")
+                        return False
     return True
 
+# --------------------------------
+# Checks if there are players on both teams!
+# --------------------------------
 
+def validate_users(users: Dict) -> bool:
+    redInt= 0
+    blueInt = 0
+    
+    for team in users:
+        for user in users[team]:
+            if "blue" in team:
+                blueInt += 1
+            else:
+                redInt += 1
 
+    if(blueInt < 1 or redInt < 1):
+        print("Number of Players on Team Blue: " + str(blueInt))
+        print("Number of Players on Team Red:" + str(redInt))
+        return False
+    else:
+        return True
+    
+def resetRoot(root: tk.Tk, users: Dict, input_ids: Dict[int, str]) -> None:
+    print("Reset after incorrect user entry.")
+    submit_button = build_ui_instance.get_object("submit")
+    root.bind("<KeyPress-F5>", lambda event: submit_button)
+    submit_button.configure(state=tk.NORMAL)
+    root.bind("<F12>", lambda event: clear_entry_fields(build_ui_instance))
+    root.bind("<KeyPress-F5>", lambda event: on_continue_clicked(root, users, input_ids, networking))
+    submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids, networking))
 
 # --------------------------------
 # AUTOFILL USERNAME WHEN ENTER IS CLICKED!

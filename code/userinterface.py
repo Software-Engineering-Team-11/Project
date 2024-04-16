@@ -36,7 +36,7 @@ def on_continue_clicked(root: tk.Tk, users:Dict, input_ids, network:Networking) 
     users = {"red": [], "blue": []}
 
     if validate_equipment_ids(input_ids):
-        print("Checked")
+        print("Equipment IDs Checked")
     else:
         return
     user_data:dict = []
@@ -66,15 +66,21 @@ def on_continue_clicked(root: tk.Tk, users:Dict, input_ids, network:Networking) 
                     user_data.append((user_id, username, team))
                     row_num = entry.split("_")[-1] if isinstance(entry, str) else entry.winfo_name().split("_")[-1]
                     users[str(team)].append(User(int(row_num),int(equipment_id),int(user_id),str(username),str(team)))
-               
+
+
                
     for team in users:
-        print(team)
+        #print(team)
         for user in users[team]:
-            print(user.user_ID)
+            #print(user.user_ID)
             network.transmit_equipment_code(user.equipment_ID)
 
 
+
+    if not validate_users(users):
+        #print(validate_users(users))
+        messagebox.showerror("Warning", f"Make sure there are players on both teams prior to starting the game.")
+        return
    # Insert user data into Supabase table
     for user_id, username, team in user_data:
        # Convert user_id to int (assuming user_id should be an integer)
@@ -279,8 +285,28 @@ def validate_equipment_ids(input_ids: Dict[int, str]) -> bool:
                     return False
     return True
 
+def validate_users(users: Dict) -> bool:
+    redInt= 0
+    blueInt = 0
+    
+    for team in users:
+        for user in users[team]:
+            if "blue" in team:
+                blueInt += 1
+            else:
+                redInt += 1
+    print("Number of Players on Team Blue: " + str(blueInt))
+    print("Number of Players on Team Red:" + str(redInt))
+    if(blueInt < 1 and redInt < 1):
+        return False
+    else:
+        return True
 
+    
+    
+    
 
+                   # 
 
 # --------------------------------
 # AUTOFILL USERNAME WHEN ENTER IS CLICKED!

@@ -65,6 +65,11 @@ pip install opencv-python
 ```
 2. Each command will download and install a different package needed to run the project. Once you have downloaded all of the packages you are ready to continue.
 
+***If if pip install does not work, replace pip install before the command with:***
+```
+sudo apt install python3-"(package name)"
+```
+
 
 ## Run Traffic Generator
 To start, open two different terminals; you'll need both. One will run the traffic generator, and the other will run the main code.

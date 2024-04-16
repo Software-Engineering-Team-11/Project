@@ -7,7 +7,7 @@ import pygubu
 
 from networking import Networking
 
-
+countdownStarted = False
 # If on Windows, import winsound, else import playsound for countdown music
 if os.name == "nt":
     import winsound

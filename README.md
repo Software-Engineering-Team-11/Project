@@ -41,14 +41,15 @@ Non-windows users:
 1. In the terminal type and enter each of the following commands one by one:
 ```
 pip install python-dotenv
-pip install tk
 pip install supabase-py
 pip install supabase
 pip install pygubu
 pip install pillow
 pip install opencv-python
-pip install pil.imagetk
 pip install playsound
+sudo apt install python3-tk
+sudo apt install python3-pil.imagetk
+sudo apt install python3-opencv
 ```
 2. Each command will download and install a different package needed to run the project. Once you have downloaded all of the packages you are ready to continue.
 

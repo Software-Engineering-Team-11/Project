@@ -28,7 +28,7 @@ def update_timer(timer_label: tk.Label, seconds: int, main_frame: tk.Frame, netw
     else:
         # Destroy main frame and start game, transmitting start game code
         main_frame.destroy()
-        network.transmit_start_game_code()
+        # network.transmit_start_game_code()
 
         import player_action 
         player_action.build(network, users, root)

@@ -5,6 +5,7 @@ import os
 import random
 import threading
 import subprocess
+import time
 
 from behind_the_scenes import theGame
 from networking import Networking
@@ -33,10 +34,7 @@ def build_new_game(root: tk.Tk) -> None:
     except:
         subprocess.Popen(["python3", "code/main.py"])
 
-def destroy_current_game(root: tk.Tk, main_frame: tk.Frame, users: dict, network: Networking, game: theGame) -> None:
-    # Destroy the main frame
-    main_frame.destroy()
-
+def destroy_current_game(root: tk.Tk, main_frame: tk.Frame, users: Dict, network: Networking, game: theGame) -> None:
     # Stop playing music
     if os.name == "nt":
         winsound.PlaySound(None, winsound.SND_ASYNC)
@@ -54,21 +52,18 @@ def destroy_current_game(root: tk.Tk, main_frame: tk.Frame, users: dict, network
         winner = "Red Team Wins!"
     else:
         winner = "Tie Game!"
-    winner_label: tk.Label = tk.Label(root, text=winner, font=("Bebas Nue", 20), bg="#FFFF00")
+    winner_label: tk.Label = tk.Label(main_frame, text=winner, font=("Bebas Nue", 20), bg="#FFFF00")
     winner_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     # Clear the user dictionary
     users["red"].clear()
     users["blue"].clear()
 
-    # Destroy game object
-    del game
-
     # Place restart game and end game buttons
-    restart_button: tk.Button = tk.Button(root, text="Restart Game", font=("Bebas Nue", 16), bg="#FFFFFF", command=lambda: build_new_game(root))
+    restart_button: tk.Button = tk.Button(main_frame, text="Restart Game", font=("Bebas Nue", 16), bg="#FFFFFF", command=lambda: build_new_game(root))
     restart_button.place(relx=0.5, rely=0.55, anchor=tk.CENTER)
-    end_button: tk.Button = tk.Button(root, text="End Game", font=("Bebas Nue", 16), bg="#FFFFFF", command=lambda: destroy_game(root, network))
-    end_button.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
+    end_button: tk.Button = tk.Button(main_frame, text="End Game", font=("Bebas Nue", 16), bg="#FFFFFF", command=lambda: destroy_game(root, network))
+    end_button.place(relx=0.5, rely=0.70, anchor=tk.CENTER)
 
 def update_timer(timer_tag: tk.Label, seconds: int, root: tk.Tk, main_frame: tk.Frame, users: Dict, network: Networking,game:theGame) -> None:
     # Update text being displayed in timer label
@@ -76,6 +71,8 @@ def update_timer(timer_tag: tk.Label, seconds: int, root: tk.Tk, main_frame: tk.
     timer_tag.config(text=f"Time Remaining: {mins:01d}:{secs:02d}")
 
     # Continue counting down, destroy main frame when timer reaches 0
+
+
     if seconds > 0:
         seconds -= 1
         timer_tag.after(1000, update_timer, timer_tag, seconds, root, main_frame, users, network,game)
@@ -213,10 +210,12 @@ def build(network: Networking, users: Dict, root: tk.Tk) -> None:
     update_score(game, main_frame, builder, users, root)
 
     # start at 6:20 to match with audio
-    update_timer(timer_tag, 380, root, main_frame, users, network,game)
+    # 380
+    update_timer(timer_tag, 10, root, main_frame, users, network,game)
 
     # 
     update_action(game,action_stream)
+
 
     game_thread: threading.Thread = threading.Thread(target=network.run_game, args=(game,), daemon=True)
     game_thread.start()

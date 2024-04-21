@@ -49,7 +49,6 @@ pip install opencv-python
 pip install playsound
 sudo apt install python3-tk
 sudo apt install python3-pil.imagetk
-sudo apt install python3-opencv
 ```
 2. Each command will download and install a different package needed to run the project. Once you have downloaded all of the packages you are ready to continue.
 

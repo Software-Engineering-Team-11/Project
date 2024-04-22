@@ -25,6 +25,16 @@ def createSockets() -> None:
     else:
         print("Failed to set up sockets.")
     
+def checkField(root: tk.Tk, event: tk.Event, input_ids: Dict, entry,  network:Networking) -> None:
+    #fieldName: str = input_ids.get(event.widget.winfo_id())
+    entry_name = entry.winfo_name()
+    #print(entry_name)
+    if "_equipment_id_" in entry_name:  # Check if the input ID corresponds to user ID
+        equipment_id = entry.get().strip()
+        networking.transmit_equipment_code(equipment_id)
+    else:
+       return
+
 
 
 # --------------------------------
@@ -70,11 +80,11 @@ def on_continue_clicked(root: tk.Tk, users:Dict, input_ids, network:Networking) 
 
 
                
-    for team in users:
+    #for team in users:
         #print(team)
-        for user in users[team]:
+        #for user in users[team]:
             #print(user.user_ID)
-            network.transmit_equipment_code(user.equipment_ID)
+            #network.transmit_equipment_code(user.equipment_ID)
 
 
 
@@ -217,8 +227,11 @@ def build_ui(root: tk.Tk, users: dict) -> None:
                                                  red_frame if "red" in field else blue_frame)
             input_ids[entry_id] = entry_id
             team = "blue" if "blue" in field else "red"
+            entry.bind("<FocusOut>", lambda event, entry=entry: selectorMethod(entry, users, team, root, event, input_ids, networking))
             entry.bind ("<Return>", lambda event, entry=entry, team=team: autofill_username(entry,users,team))
+    
 
+    #root.bind("<Tab>", lambda event: checkField(root, event, input_ids, networking))
     submit_button = build_ui_instance.get_object("submit")
     root.bind("<KeyPress-F5>", lambda event: on_continue_clicked(root, users, input_ids, networking))
     submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids, networking))
@@ -325,13 +338,22 @@ def resetRoot(root: tk.Tk, users: Dict, input_ids: Dict[int, str]) -> None:
     root.bind("<F12>", lambda event: clear_entry_fields(build_ui_instance))
     root.bind("<KeyPress-F5>", lambda event: on_continue_clicked(root, users, input_ids, networking))
     submit_button.configure(command=lambda: on_continue_clicked(root, users, input_ids, networking))
+    
+def selectorMethod(entry, users, team, root: tk.Tk, event: tk.Event, input_ids: Dict, network:Networking) -> None:
+    entry_name = entry.winfo_name()
+    #print(entry)
+    if "_user_id_" in entry_name:
+        autofill_username(entry, users, team)
+    if "_equipment_id_" in entry_name:
+        checkField(root, event, input_ids, entry, networking)
+        
 
 # --------------------------------
 # AUTOFILL USERNAME WHEN ENTER IS CLICKED!
 # --------------------------------
 def autofill_username(entry, users, team):
    entry_name = entry.winfo_name()
-#    print(entry)
+   #print(entry)
    if "_user_id_" in entry_name:  # Check if the input ID corresponds to user ID
         user_id = entry.get().strip()
    else:

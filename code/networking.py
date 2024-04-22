@@ -79,6 +79,7 @@ class Networking:
         try:
             self.transmitSocket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             self.transmitSocket.sendto(str.encode(str(equipment_code)), (IP,SERVER_TRANSMIT_PORT))
+            print("Sent " + equipment_code)
             return True
         except Exception as e:
             print(e)

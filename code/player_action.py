@@ -213,7 +213,7 @@ def build(network: Networking, users: Dict, root: tk.Tk) -> None:
 
     # start at 6:20 to match with audio
     # 380
-    update_timer(timer_tag, 10, root, main_frame, users, network,game)
+    update_timer(timer_tag, 360, root, main_frame, users, network,game)
 
     # 
     update_action(game,action_stream)

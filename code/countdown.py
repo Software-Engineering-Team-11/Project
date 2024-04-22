@@ -68,14 +68,14 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     # Play sound asynchronously to prevent freezing
     if os.name == "nt":
         try:
-            winsound.PlaySound("assets/waitingroom.wav", winsound.SND_ASYNC)
+            winsound.PlaySound("assets/waitingroom2.wav", winsound.SND_ASYNC)
         except:
-            winsound.PlaySound("../assets/waitingroom.wav", winsound.SND_ASYNC)
+            winsound.PlaySound("../assets/waitingroom2.wav", winsound.SND_ASYNC)
     else:
         try:
-            playsound.playsound("assets/waitingroom.wav", block=False)
+            playsound.playsound("assets/waitingroom2.wav", block=False)
         except:
-            playsound.playsound("../assets/waitingroom.wav", block=False)
+            playsound.playsound("../assets/waitingroom2.wav", block=False)
 
     # Place the main frame in the center of the root window
     main_frame: tk.Frame = builder.get_object("master", root)
@@ -113,7 +113,7 @@ def build(root: tk.Tk, users: Dict, network: Networking) -> None:
     video_width: int = 500
     video_height: int = 500
     # DEFAULT TO 30!
-    seconds: int = 2
+    seconds: int = 30
 
 # --------------------------------
 # START THE COUNTDOWN!

@@ -78,6 +78,8 @@ def update_timer(timer_tag: tk.Label, seconds: int, root: tk.Tk, main_frame: tk.
         timer_tag.after(1000, update_timer, timer_tag, seconds, root, main_frame, users, network,game)
     else:
         destroy_current_game(root, main_frame, users, network, game)
+        network.transmit_end_game_code()
+        network.transmit_end_game_code()
 
 
 flashing_label = None

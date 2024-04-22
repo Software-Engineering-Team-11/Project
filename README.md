@@ -1,5 +1,5 @@
 # Team 11
-This project is still being developed as part of the Fall 2024 semester of the Software Engineering course at the University of Arkansas. The goal of this project is to recreate the Photon laser tag system using more up to date technologies.
+This project was developed as part of the Fall 2024 semester of the Software Engineering course at the University of Arkansas. The goal of this project is to recreate the Photon laser tag system using more up to date technologies.
 
 ## DOWNLOAD THE PROJECT
 You can obtain the project either by downloading it as a ZIP file or by cloning the repository to your local machine. To clone the repository, use the following command:

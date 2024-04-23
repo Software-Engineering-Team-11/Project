@@ -46,16 +46,6 @@ class Networking:
         except Exception as e:
             print(e)
             return False
-        # try:
-        #     self.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        #     self.transmitSocket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        #     self.receiveSocket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        #     self.receiveSocket.bind((SERVER_ADDRESS, SERVER_RECEIVE_PORT))
-        #     self.transmitSocket.bind((SERVER_ADDRESS, SERVER_TRANSMIT_PORT))
-        #     return True
-        # except Exception as e:
-        #     print(e)
-        #     return False
     
     def close_sockets(self) -> bool:
         # Close transmit and receive sockets

@@ -16,12 +16,6 @@ else:
 # Create the Supabase client
 supabase_client = supabase_manager.supabase
 
-# def destroy_root(root: tk.Tk, network: Networking) -> None:
-#     # if os.name == "nt":
-#     #     winsound.PlaySound(None, winsound.SND_ASYNC)
-#     # network.close_sockets()
-#     root.destroy()
-
 # --------------------------------
 # BUILD ROOT OF SCREEN!
 # --------------------------------

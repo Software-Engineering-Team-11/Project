@@ -107,6 +107,7 @@ def on_continue_clicked(root: tk.Tk, users:Dict, input_ids, network:Networking) 
     # Countdown screen built
     countdown.build(root, users, networking)    
 
+
 # --------------------------------
 # CLEAR ENTRY FIELDS!
 # --------------------------------

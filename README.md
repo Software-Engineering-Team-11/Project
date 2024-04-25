@@ -95,11 +95,11 @@ cd Project
 
 For non-Windows users, use:
 ```
-python3 code\main.py
+python3 code/main.py
 ```
 For Windows users, use:
 ```
-python code\main.py
+python code/main.py
 ```
 
 After using this command, the player entry screen will pop up. Fill in the equipment id field using the same four ids used for the traffic generator, assigning two to the blue team and two to the red team. Then fill in the user id field, again we recommended used ids 1, 2, 3, and 4. You can use different IDs, but they all must be unique, between the numbers 1 - 30, and cannot be duplicated. Once you insert the ID, press the "Enter" key. This action will auto-populate the username if the player is in Supabase. If the user does not exist with that id, input their name in the Username field and they will be added to Supabase for future reference. Next, click "Continue" to bring you to the countdown screen and start the game.

@@ -17,8 +17,8 @@ IP: str = "127.0.0.1"
 SEND_ADDRESS = ("127.0.0.1", 7500)
 RECEIEVE_ADDRESS = ("127.0.0.1", 7500)
 SERVER_ADDRESS: str = "0.0.0.0"
-SERVER_RECEIVE_PORT: int = 7500
-SERVER_TRANSMIT_PORT: int = 7501
+SERVER_RECEIVE_PORT: int = 7501
+SERVER_TRANSMIT_PORT: int = 7500
 
 
 
@@ -138,8 +138,10 @@ class Networking:
                             current_game_state.blue_base_hit(left_code)
                             self.transmit_equipment_code(str(RED_SCORE))
                         elif 0 < right_code <= 100:
-                            current_game_state.player_hit(left_code, right_code)
-                            self.transmit_player_hit(right_code)
+                            if(current_game_state.player_hit(left_code, right_code)):
+                                self.transmit_player_hit(right_code)
+                            else:
+                                self.transmit_player_hit(left_code)
                         else:
                             print("Invalid codes: Left Code is " + str(left_code) + " Right Code is " + str(right_code))
                     else:

@@ -31,7 +31,7 @@ class theGame:
         self.blue_base_scored: bool = False
         self.game_event_actions: [str] = []
     
-    def player_hit(self, equipment_shooter_code: int, equipment_hit_code: int) -> None:
+    def player_hit(self, equipment_shooter_code: int, equipment_hit_code: int) -> bool:
         # Attributing points to a blue user
         for user in self.blue_users:
             # Check if id matches, and if player doesn't hit own teammate
@@ -42,6 +42,18 @@ class theGame:
                     if victim_user.equipment_ID == equipment_hit_code:
                         shot_user: User = victim_user
                 self.game_event_actions.append(f"{user.username} hit {shot_user.username}")
+                return True
+            else:
+                if user.equipment_ID == equipment_shooter_code:
+                    user.game_score -= points_per_tag
+                    self.blue_team_score -= points_per_tag
+                    for victim_user in self.blue_users:
+                        if victim_user.equipment_ID == equipment_hit_code:
+                            shot_user: User = victim_user
+                    self.game_event_actions.append(f"{user.username} hit teammate {shot_user.username}")
+                    print("Team Hit Registered")
+                    return False
+                
         
         # Attributing points to a red user
         for user in self.red_users:
@@ -53,6 +65,17 @@ class theGame:
                     if victim_user.equipment_ID == equipment_hit_code:
                         shot_user: User = victim_user
                 self.game_event_actions.append(f"{user.username} hit {shot_user.username}")
+                return True
+            else:
+                if user.equipment_ID == equipment_shooter_code:
+                    user.game_score -= points_per_tag
+                    self.red_team_score -= points_per_tag
+                    for victim_user in self.red_users:
+                        if victim_user.equipment_ID == equipment_hit_code:
+                            shot_user: User = victim_user
+                    self.game_event_actions.append(f"{user.username} hit teammate {shot_user.username}")
+                    print("Team Hit Registered")
+                    return False
 
     def red_base_hit(self, equipment_shooter_code: int) -> None:
         for user in self.blue_users:

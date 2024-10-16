@@ -1,3 +1,5 @@
+[![Watch the video](https://img.youtube.com/vi/KtY_zG1_3Qw/maxresdefault.jpg)](https://www.youtube.com/watch?v=KtY_zG1_3Qw)
+
 # Team 11
 This project was developed as part of the Fall 2024 semester of the Software Engineering course at the University of Arkansas. The goal of the project was to recreate the Photon laser tag system using more up to date technologies.
 
